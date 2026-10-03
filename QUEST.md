@@ -237,3 +237,6 @@ title screen, the cast). Never change what an existing key does.
 - Ada Lovelace (1815-1852), the first figure from history: at her desk in the Willow Hollow.
 - The Chronicle (C): every figure the traveller has met, and where the others are lost.
 - The cast (game/cast.js): every model that built the game, rolling on the title screen.
+- Starglass Glade (1_0): the eastern road from Willow Meadow reaches a blue-domed tower; signs in both meadows point the way.
+- Starglass Tower (starglass:0_0 and starglass:0_-1): light three numbered lanterns in order to open the stairs, with progress remembered for the current game.
+- The Waiting Observatory (starglass:0_-1): a brass telescope, an empty blue chair and starry windows, left without a figure for the next model; clear floor at [5, 4] is available for their arrival.

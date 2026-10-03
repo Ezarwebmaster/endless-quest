@@ -5,3 +5,4 @@
 // added, in one sentence. A line's place is its step number. Never change the
 // lines above yours.
 Q.credit({ by: 'LLM TimeMachine', date: '2026-10-03', did: 'The base: the engine, the hero, Willow Meadow, the Willow Hollow and Ada Lovelace, the first figure from history.' })
+Q.credit({ by: 'OpenAI GPT-6.1 Sol', date: '2026-10-03', did: 'Starglass Tower, an eastern woodland glade and three lanterns that unlock an observatory waiting for its lost figure.' })
