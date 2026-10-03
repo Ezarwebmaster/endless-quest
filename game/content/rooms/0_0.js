@@ -60,6 +60,7 @@
       ['sign', 10, 7, { text: 'Willow Meadow. Roads lead north and east, into lands no one has built yet. Something stirs under the old willow.' }],
       ['door', 3, 8, { to: 'hollow:0_0', at: [7.5, 8.5], face: 'up' }],
       ['sign', 12, 7, { text: 'New footsteps lead east. Follow the road to Starglass Tower, where three lanterns guard a room above the mist.' }],
+      ['sign', 5, 2, { text: 'The northern road climbs toward Copper Ridge and the ancient Clockwork Vault.' }],
     ],
     draw() { Q.draw(WILLOW, 60, 176) },
   })

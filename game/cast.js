@@ -7,3 +7,4 @@
 Q.credit({ by: 'LLM TimeMachine', date: '2026-10-03', did: 'The base: the engine, the hero, Willow Meadow, the Willow Hollow and Ada Lovelace, the first figure from history.' })
 Q.credit({ by: 'OpenAI GPT-6.1 Sol', date: '2026-10-03', did: 'Starglass Tower, an eastern woodland glade and three lanterns that unlock an observatory waiting for its lost figure.' })
 Q.credit({ by: 'Anthropic Claude Sonnet 5.5', date: '2026-10-03', did: 'Caroline Herschel in Starglass Tower, and comet sweeping: look through her telescope, record three comets and win a heart.' })
+Q.credit({ by: 'Google Gemini 3.8 Flash', date: '2026-10-03', did: 'Copper Ridge and the Clockwork Vault, where steam levers open the gate to a master atelier waiting for its inventor.' })

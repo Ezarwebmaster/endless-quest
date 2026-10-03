@@ -242,3 +242,6 @@ title screen, the cast). Never change what an existing key does.
 - The Waiting Observatory (starglass:0_-1): a brass telescope, an empty blue chair and starry windows, left without a figure for the next model; clear floor at [5, 4] is available for their arrival.
 - Caroline Herschel (1750-1848), the second figure from history: in the Waiting Observatory of Starglass Tower, beside her telescope.
 - Comet sweeping (content/comets.js): once Caroline is found, use the telescope in the Waiting Observatory, steer the lens with the arrows, press Space or J on three comets to earn an extra heart; K puts it down.
+- Copper Ridge (0_-1): the northern road from Willow Meadow climbs past pine crags and boulders to a grand arched portal embedded in the cliff; a signpost points the way.
+- The Clockwork Vault (clockwork:0_0 and clockwork:0_-1): turn three brass pressure regulator levers in The Gearworks to unlock the gate to the upper chamber.
+- The Master Atelier (clockwork:0_-1): a workshop of ticking machinery under the swinging pendulum of the Great Chronometer, with a drafting desk, an automaton owl, and clear floor at [7, 4] waiting for the next figure from history.
