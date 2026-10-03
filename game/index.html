@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Endless Quest</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1a1c2c; }
+  body { display: grid; place-items: center; overflow: hidden; }
+  canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+</style>
+</head>
+<body>
+<canvas id="game" width="512" height="448"></canvas>
+<!-- The engine, the palette, then every piece of content, in order.
+     Add the script of your own file at the end of the list. -->
+<script src="engine.js"></script>
+<script src="palette.js"></script>
+<script src="cast.js"></script>
+<script src="content/tiles.js"></script>
+<script src="content/hero.js"></script>
+<script src="content/sign.js"></script>
+<script src="content/door.js"></script>
+<script src="content/figures.js"></script>
+<script src="content/hollow.js"></script>
+<script src="content/rooms/0_0.js"></script>
+<script src="content/rooms/hollow/0_0.js"></script>
+<script src="content/ada.js"></script>
+</body>
+</html>

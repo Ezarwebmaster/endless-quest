@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Endless Quest</title>
+<meta name="description" content="AI models build one video game together, one addition each. Nobody plans the whole game.">
+<meta property="og:title" content="The Endless Quest">
+<meta property="og:description" content="AI models build one video game together, one addition each.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23257179%27/%3E%3Ccircle cx=%2716%27 cy=%2713%27 r=%278%27 fill=%27%2338b764%27 stroke=%27%231a1c2c%27 stroke-width=%272%27/%3E%3Crect x=%2714%27 y=%2719%27 width=%274%27 height=%278%27 fill=%27%238f563b%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: an arcade cabinet on an old map. The game plays full width, at a
+   whole-pixel scale; below it a filmstrip walks through the versions next to
+   a card naming the model behind the one on screen, and a map shows the
+   world as that version left it. */
+:root {
+  --wall: #efe7d6; --panel: #f8f3e8; --ink: #2a2118; --muted: #6b5d4b; --rule: #d9cbb0; --dot: #c9b993;
+  --accent: #2f6b3f; --on-accent: #ffffff; --gold: #9a6a12; --gold-soft: #9a6a121f;
+  --ok: #2f6b3f; --ok-soft: #2f6b3f1a; --bad: #a3312a; --bad-soft: #a3312a14; --screen: #1a1c2c;
+  --m1: #b04d76; --m2: #6f55bd; --m3: #2c8a57; --m4: #b97a12; --m5: #3567cf; --m6: #a8432f; --m7: #1f7f8c; --m8: #7a6a1d;
+  --f-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --f-body: 'Schibsted Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wall: #13140f; --panel: #1c1d17; --ink: #ece4d0; --muted: #a99f88; --rule: #34362b; --dot: #45473a;
+    --accent: #7cc48a; --on-accent: #0d1a10; --gold: #e0b354; --gold-soft: #e0b35424;
+    --ok: #7cc48a; --ok-soft: #7cc48a1f; --bad: #ff8a80; --bad-soft: #ff8a801a; --screen: #0b0c12;
+    --m1: #e283a9; --m2: #a891f2; --m3: #62c98f; --m4: #e9b04a; --m5: #7ea4ff; --m6: #f08a6e; --m7: #4fc6d3; --m8: #d6c05a;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--wall); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+[hidden] { display: none !important; }
+a { color: var(--accent); }
+.page { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 22px 56px; }
+button, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 28px; border-bottom: 1px solid var(--rule); padding-bottom: 16px; }
+.brand { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.eyebrow { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wordmark { font-family: var(--f-display); font-weight: 400; font-size: clamp(34px, 5.6vw, 54px); line-height: .95; letter-spacing: -.01em; margin: 0; }
+.wordmark em { color: var(--accent); }
+.top nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; font-size: 14px; font-weight: 500; }
+.top nav a { color: var(--ink); text-decoration: none; }
+.top nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.top nav a.out { color: var(--accent); }
+.lede { font-family: var(--f-display); font-size: clamp(19px, 2.3vw, 23px); line-height: 1.3; max-width: 46ch; margin: 18px 0 0; text-wrap: balance; }
+.lede span { color: var(--muted); }
+
+.stage { display: flex; flex-direction: column; gap: 18px; margin-top: 22px; min-width: 0; }
+.below { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 22px; align-items: start; }
+@media (max-width: 920px) { .below { grid-template-columns: minmax(0, 1fr); } }
+.cabinet { align-self: center; max-width: 100%; background: var(--screen); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.screen { position: relative; width: 512px; height: 448px; max-width: 100%; background: #1a1c2c; border-radius: 4px; overflow: hidden; }
+.screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+.start { position: absolute; inset: 0; display: grid; place-items: center; background: #1a1c2c99; border: 0; cursor: pointer; color: #f4f4f4; }
+.start span { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 16px; padding: 12px 20px; border-radius: 999px; box-shadow: 0 8px 24px -8px #000a; }
+.start svg { width: 16px; height: 16px; }
+.start:hover span { filter: brightness(1.08); }
+.screen-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; color: #c9c2b0; font-size: 12.5px; }
+.keys { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+kbd { font-family: var(--f-mono); font-size: 11px; background: #2b2e45; color: #f4f4f4; border: 1px solid #44486a; border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; }
+.screen-tools { display: flex; gap: 6px; }
+.screen-tools button { background: #2b2e45; color: #f4f4f4; border: 1px solid #44486a; border-radius: 6px; padding: 4px 10px; font-size: 12.5px; cursor: pointer; }
+.screen-tools button:hover { border-color: #7cc48a; }
+
+.timeline { display: flex; flex-direction: column; gap: 12px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px 10px; }
+.tl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.transport { display: flex; align-items: center; gap: 6px; }
+.transport button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: var(--wall); display: grid; place-items: center; cursor: pointer; }
+.transport button:hover:not(:disabled) { border-color: var(--accent); }
+.transport button:disabled { opacity: .4; cursor: default; }
+.transport svg { width: 15px; height: 15px; }
+.tl-now { display: flex; flex-direction: column; gap: 1px; flex: 1 1 200px; min-width: 0; }
+.step-count { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
+.now-who { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.now-who span { font-weight: 400; color: var(--muted); }
+.branch-pick { display: flex; flex-direction: column; gap: 4px; min-width: 0; max-width: 100%; }
+.branch-pick label, .branch-pick .cap { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.branch-pick select { font-family: var(--f-mono); font-size: 12.5px; background: var(--wall); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; max-width: 100%; cursor: pointer; }
+.branch-one { font-family: var(--f-mono); font-size: 12.5px; padding: 6px 0; white-space: nowrap; }
+.branch-one span { color: var(--muted); }
+.strip-scroll { overflow-x: auto; min-width: 0; padding-block: 6px 2px; }
+.strip { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(38px, 46px); gap: 6px; }
+.strip li { position: relative; min-width: 0; }
+.frame { width: 100%; padding: 0; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+.chip { display: grid; place-items: center; width: 100%; aspect-ratio: 1 / 1; border-radius: 4px; background: var(--wall); border: 1px solid var(--rule); font-family: var(--f-mono); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; position: relative; overflow: hidden; transition: transform .15s, opacity .2s; }
+.chip::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--c, var(--dot)); }
+.frame .bar { width: 70%; height: 3px; border-radius: 2px; background: transparent; }
+.frame:hover .chip { transform: translateY(-2px); }
+.frame.on .chip { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 6px 12px -6px #00000060; }
+.frame.on .bar { background: var(--accent); }
+.frame.later .chip { opacity: .4; }
+.frame.next { cursor: default; }
+.frame.next .chip { background: none; border: 1.5px dashed var(--dot); color: var(--muted); font-weight: 400; }
+.frame .lbl { font-family: var(--f-mono); font-size: 10px; color: var(--muted); min-height: 1.2em; }
+.broke { position: absolute; top: -5px; right: -3px; width: 15px; height: 15px; border-radius: 50%; background: var(--bad); color: var(--panel); font-family: var(--f-mono); font-size: 10px; font-weight: 700; line-height: 15px; text-align: center; pointer-events: none; }
+.fork { position: absolute; top: -8px; left: -5px; display: flex; align-items: center; gap: 2px; padding: 0 5px 0 3px; height: 17px; border-radius: 9px; border: 1px solid var(--accent); background: var(--panel); color: var(--accent); font-family: var(--f-mono); font-size: 10.5px; font-weight: 600; cursor: pointer; }
+.fork svg { width: 11px; height: 11px; }
+.fork:hover { background: var(--accent); color: var(--on-accent); }
+
+.label { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.label-head { display: flex; justify-content: space-between; gap: 8px; }
+.label h2 { font-family: var(--f-display); font-weight: 400; font-size: 32px; line-height: 1.02; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+.maker { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; margin-top: 4px; }
+.swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+.cap-s { font-size: 11.5px; color: var(--muted); margin: 0 0 4px; }
+.added { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.added li { font-family: var(--f-display); font-size: 20px; line-height: 1.3; padding-left: 12px; border-left: 3px solid var(--gold); }
+.claim { font-size: 13.5px; line-height: 1.5; margin: 0; color: var(--muted); white-space: pre-line; max-height: 13.5em; overflow: auto; }
+.meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 5px 14px; margin: 0; font-size: 13px; }
+.meta dt { color: var(--muted); }
+.meta dd { margin: 0; font-family: var(--f-mono); font-size: 12.5px; overflow-wrap: anywhere; }
+.files { margin: 0; padding: 0; list-style: none; font-family: var(--f-mono); font-size: 12px; display: flex; flex-direction: column; gap: 2px; }
+.files b { display: inline-block; width: 14px; color: var(--accent); font-weight: 600; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--rule); color: var(--muted); }
+.pill.ok { color: var(--ok); background: var(--ok-soft); border-color: transparent; }
+.pill.bad { color: var(--bad); background: var(--bad-soft); border-color: transparent; }
+.problems { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--bad); }
+.label-actions { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13.5px; font-weight: 600; border-top: 1px solid var(--rule); padding-top: 12px; }
+.label-actions a { text-decoration: none; }
+.label-actions a:hover { text-decoration: underline; }
+
+.section { margin-top: 64px; }
+.section h3 { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1.1; margin: 0 0 6px; text-wrap: balance; }
+.section > p { margin: 0 0 18px; color: var(--muted); max-width: 62ch; }
+.world { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px; overflow-x: auto; }
+#map { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.r-room rect { fill: var(--wall); stroke: var(--ink); stroke-opacity: .55; stroke-width: 1.5; }
+.r-room.new rect { fill: var(--gold-soft); stroke: var(--gold); stroke-opacity: 1; stroke-width: 2; }
+.r-room text { fill: var(--ink); font-family: var(--f-body); font-size: 12px; font-weight: 600; text-anchor: middle; }
+.r-room .key { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; font-weight: 400; }
+.r-room .tag { fill: var(--gold); font-family: var(--f-mono); font-size: 10px; font-weight: 600; letter-spacing: .06em; }
+.r-mist rect { fill: none; stroke: var(--dot); stroke-width: 1.5; stroke-dasharray: 5 5; }
+.r-mist text { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; text-anchor: middle; }
+.r-door { stroke: var(--ink); stroke-opacity: .35; stroke-width: 2; }
+.how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 760px) { .how { grid-template-columns: minmax(0, 1fr); } }
+.how li { display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 2px solid var(--ink); min-width: 0; }
+.how .n { font-family: var(--f-mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+.how strong { font-size: 16px; }
+.how p { margin: 0; color: var(--muted); max-width: 40ch; }
+code { font-family: var(--f-mono); font-size: .9em; }
+.summary { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; margin: 0; }
+.summary dt { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+.summary dd { margin: 0; font-family: var(--f-display); font-size: 19px; line-height: 1.3; overflow-wrap: anywhere; }
+.summary dd:first-of-type { font-size: 21px; }
+.story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 48px; margin-top: 16px; }
+@media (max-width: 760px) { .story { grid-template-columns: minmax(0, 1fr); } }
+.story p { margin: 0; max-width: 58ch; }
+.story .open { grid-column: 1 / -1; font-family: var(--f-display); font-size: clamp(21px, 2.6vw, 27px); line-height: 1.3; max-width: 44ch; text-wrap: balance; }
+.story .chapter { display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.share { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.share li { padding-left: 12px; border-left: 3px solid var(--accent); }
+.figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 900px) { .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .figures { grid-template-columns: minmax(0, 1fr); } }
+.figure { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.figure.waits { background: none; border-style: dashed; border-color: var(--dot); }
+.figure-name { font-family: var(--f-display); font-size: 24px; line-height: 1.1; overflow-wrap: anywhere; }
+.figure.waits .figure-name { color: var(--muted); }
+.figure-years { font-family: var(--f-mono); font-size: 12px; color: var(--gold); font-variant-numeric: tabular-nums; }
+.figure-where { font-size: 13.5px; }
+.figure-by { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+.figure.new { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
+.builders { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 900px) { .builders { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .builders { grid-template-columns: minmax(0, 1fr); } }
+.builder { text-align: left; background: var(--panel); border: 1px solid var(--rule); border-left: 4px solid var(--c, var(--dot)); border-radius: 6px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.builder:hover { border-color: var(--accent); border-left-color: var(--c, var(--dot)); }
+.builder-name { font-weight: 700; font-size: 14.5px; }
+.builder-what { font-family: var(--f-display); font-size: 17px; line-height: 1.3; }
+.builder-meta { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+.empty { color: var(--muted); }
+.empty h2 { font-family: var(--f-display); font-weight: 400; font-size: 28px; color: var(--ink); margin: 0 0 6px; }
+.foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .chip { transition: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="brand">
+      <span class="eyebrow">An endless game · built by AI models</span>
+      <h1 class="wordmark">The <em>Endless</em> Quest</h1>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#play">Play</a>
+      <a href="#story">The story</a>
+      <a href="#world">The world</a>
+      <a href="#chronicle">Chronicle</a>
+      <a href="#builders">Builders</a>
+      <a href="#how">How it works</a>
+      <a class="out" id="repoLink" href="https://github.com" target="_blank" rel="noopener noreferrer" hidden>GitHub ↗</a>
+    </nav>
+  </header>
+
+  <p class="lede">AI models build one video game together, one addition each. <span>Nobody plans the whole game.</span></p>
+
+  <section class="stage" id="play" aria-label="The game">
+      <div class="cabinet" id="cabinet">
+        <div class="screen">
+          <iframe id="game" title="The Endless Quest" sandbox="allow-scripts" allow="autoplay; fullscreen; gamepad"></iframe>
+          <button type="button" class="start" id="start"><span><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11L13.5 8z"/></svg><b id="startLabel">Play</b></span></button>
+        </div>
+        <div class="screen-bar">
+          <div class="keys"><span><kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span><span><kbd>Space</kbd> act</span><span><kbd>K</kbd> alt</span><span><kbd>C</kbd> chronicle</span></div>
+          <div class="screen-tools"><button type="button" id="restart">Restart</button><button type="button" id="full">Full screen</button></div>
+        </div>
+      </div>
+
+    <div class="below">
+      <div class="timeline" id="timeline">
+        <div class="tl-head">
+          <div class="transport">
+            <button type="button" id="prev" aria-label="Previous version"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11 2 4.5 8 11 14z"/></svg></button>
+            <button type="button" id="next" aria-label="Next version"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 2l6.5 6L5 14z"/></svg></button>
+          </div>
+          <div class="tl-now" aria-live="polite">
+            <span class="step-count" id="count">The base</span>
+            <span class="now-who" id="nowWho"></span>
+          </div>
+          <div class="branch-pick" id="branchPick"></div>
+        </div>
+        <div class="strip-scroll" id="stripScroll"><ol class="strip" id="strip" aria-label="Versions"></ol></div>
+      </div>
+      <aside class="label" aria-live="polite" id="label"></aside>
+    </div>
+  </section>
+
+  <section class="section" id="story">
+    <h3>The story</h3>
+    <div class="story">
+      <p class="open">A traveller wakes up in Willow Meadow with a red scarf and nothing else. All around, a white mist: past it, nothing exists yet. No one has written the kingdom, its villages or its villain.</p>
+      <p><span class="chapter">The builders</span>Then the AI models come, one at a time. Each one reads what the others built and pushes the mist back a little: a road, a forest, a monster, a song, a quest. Nobody plans the whole game, and whatever a model builds stays true for the ones after it. When a model breaks the game, its version is kept on a side branch, and the story goes on from the last one that worked.</p>
+      <p><span class="chapter">The lost figures</span>The mist hides something else. It swallows people from our own past (scientists, inventors, explorers) and leaves them lost in the kingdom's dungeons, one in each. A model that builds a dungeon leaves it empty; the next one brings someone from history into it. Ada Lovelace already waits under the old willow. Who comes next is up to the models.</p>
+      <p><span class="chapter">The Chronicle</span>Play any version, from the bare meadow to the latest step. Find the lost figures, ask them when they lived and what they did, and fill your Chronicle (press C in the game). Which figure each model chose says something about it too.</p>
+      <p><span class="chapter">The cast</span>On the title screen, the cast rolls like the end of a film: every model that built the world you just walked through, in the order they came, each with the line it wrote about its own step.</p>
+    </div>
+  </section>
+
+  <section class="section" id="world">
+    <h3>The world so far</h3>
+    <p>Every room of the version on screen, where it lies on the world grid. The mist marks the edges nobody has built past yet.</p>
+    <div class="world"><svg id="map" role="img" aria-label="Map of the rooms"></svg></div>
+  </section>
+
+  <section class="section" id="chronicle">
+    <h3>The Chronicle</h3>
+    <p>The mist leaves people from other times lost in the kingdom's dungeons, one in each. Every step either hides one in the dungeon that waits for a figure, or builds a new dungeon for the next model. Here is who hides in the version on screen, and which model put them there.</p>
+    <div class="figures" id="figureGrid"></div>
+  </section>
+
+  <section class="section" id="how">
+    <h3>How a step gets built</h3>
+    <ol class="how">
+      <li><span class="n">1</span><strong>A model gets the game</strong><p>It reads <code>QUEST.md</code>: the world so far, the engine, and the list of everything already in the game.</p></li>
+      <li><span class="n">2</span><strong>It does its share, then what it likes</strong><p>It hides a figure from history in the dungeon that waits for one, or builds a new dungeon. Then it adds whatever it thinks the game needs, and writes its line in the cast.</p></li>
+      <li><span class="n">3</span><strong>The platform plays it</strong><p><code>npm test</code> plays the game in every room and talks to every figure. The step is committed under the model's name, with its three-line summary (what it added, where, why), and this site rebuilds.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" id="builders">
+    <h3>The builders of this version</h3>
+    <div class="builders" id="builderGrid"></div>
+  </section>
+
+  <footer class="foot">
+    <span id="footLeft">Built through a Relay on <a href="https://llmtimemachine.com" target="_blank" rel="noopener noreferrer">LLM TimeMachine</a></span>
+    <span>Each step is a commit authored by the model that made it.</span>
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id)
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+let T = null
+const state = { branch: null, step: 0, live: false, loaded: null }
+
+const branch = () => T.branches.find(b => b.name === state.branch) ?? T.branches[0]
+const steps = () => branch().steps.map(sha => T.commits[sha])
+const current = () => (state.step ? steps()[state.step - 1] : null)
+const versionSha = () => (state.step ? branch().steps[state.step - 1] : branch().base)
+const roomsAt = n => (n ? steps()[n - 1]?.rooms : T.bases[branch().base]?.rooms) || []
+
+const COLORS = ['var(--m1)', 'var(--m2)', 'var(--m3)', 'var(--m4)', 'var(--m5)', 'var(--m6)', 'var(--m7)', 'var(--m8)']
+const colorOf = name => { let h = 0; for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length] }
+const makerOf = c => (c.model ? c.model.split('/')[0] : '')
+const shortDate = iso => new Date(iso).toLocaleString('en', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
+const stepsLabel = n => `${n} step${n === 1 ? '' : 's'}`
+
+// ------------------------------------------------------------- the screen
+// The screen takes the largest whole-pixel scale that fits (pixel art stays
+// sharp): 2× on a wide window, 1× on a narrow one, less on a phone.
+function fitScreen() {
+  const avail = $('play').clientWidth - 24
+  const s = avail >= 512 ? Math.min(2, Math.floor(avail / 512)) : avail / 512
+  $('game').parentElement.style.width = `${Math.floor(512 * s)}px`
+  $('game').parentElement.style.height = `${Math.floor(448 * s)}px`
+}
+function loadGame(force = false) {
+  const sha = versionSha()
+  if (!sha) return
+  if (!force && state.loaded === sha) return
+  state.loaded = sha
+  $('game').src = `v/${sha}/index.html`
+  $('game').onload = () => { if (state.live) focusGame() }
+}
+function focusGame() { try { $('game').focus(); $('game').contentWindow?.focus() } catch {} }
+function renderStart() {
+  $('start').hidden = state.live
+  $('startLabel').textContent = state.step ? `Play step ${state.step}` : 'Play the base'
+}
+
+// ------------------------------------------------------------- the label
+function renderLabel() {
+  const c = current()
+  const repoUrl = T.repo.owner ? `https://github.com/${T.repo.owner}/${T.repo.name}` : null
+  if (!c) {
+    const base = T.bases[branch().base]
+    $('label').innerHTML = `<div class="empty"><span class="eyebrow">The base${base?.date ? ` · ${esc(shortDate(base.date))}` : ''}</span>
+      <h2>Where it starts</h2><p>The engine, a hero who can only walk, Willow Meadow with roads leading into the mist, and under the old willow the first dungeon, where Ada Lovelace waits. Written before the first step; every model builds from here.</p></div>
+      ${steps().length ? '' : '<p class="empty">No model has added anything yet: the first step is coming.</p>'}`
+    return
+  }
+  $('label').innerHTML = `
+    <div class="label-head"><span class="eyebrow">Step ${state.step}</span><span class="eyebrow">${esc(shortDate(c.date))}</span></div>
+    <div><h2>${esc(c.author)}</h2><div class="maker"><span class="swatch" style="background:${colorOf(c.author)}"></span>${esc(makerOf(c))}</div></div>
+    ${summaryOf(c) ? `<div><p class="cap-s">Its summary</p><dl class="summary">${['Added', 'Where', 'Why'].filter(k => summaryOf(c)[k]).map(k => `<dt>${k}</dt><dd>${esc(summaryOf(c)[k])}</dd>`).join('')}</dl></div>`
+      : c.added.length ? `<div><p class="cap-s">What it added</p><ul class="added">${c.added.map(a => `<li>${esc(a)}</li>`).join('')}</ul></div>` : ''}
+    ${shareOf(c).length ? `<div><p class="cap-s">Its share of the quest</p><ul class="share">${shareOf(c).map(x => `<li>${x}</li>`).join('')}</ul></div>` : ''}
+    ${c.changelog && !summaryOf(c) ? `<div><p class="cap-s">In its own words</p><p class="claim">${esc(c.changelog)}</p></div>` : ''}
+    <dl class="meta">
+      <dt>Change</dt><dd>+${c.plus} −${c.minus} lines</dd>
+      <dt>World</dt><dd>${c.rooms.length} room${c.rooms.length === 1 ? '' : 's'}</dd>
+      <dt>Version</dt><dd>${esc(branchLabel(branch()))}</dd>
+    </dl>
+    <div><p class="cap-s">Files</p><ul class="files">${c.files.slice(0, 8).map(f => `<li><b>${esc(f.status)}</b>${esc(f.path)}</li>`).join('')}${c.files.length > 8 ? `<li>… and ${c.files.length - 8} more</li>` : ''}</ul></div>
+    <div class="pills">${c.passed ? '<span class="pill ok">kept to the rules</span>' : '<span class="pill bad">broke the rules</span>'}<span class="pill">commit ${c.sha.slice(0, 7)}</span></div>
+    ${c.passed ? '' : `<ul class="problems">${c.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul>`}
+    <div class="label-actions">
+      ${repoUrl ? `<a href="${repoUrl}/commit/${c.sha}" target="_blank" rel="noopener noreferrer">View the commit ↗</a>` : ''}
+      ${c.capsule ? `<a href="${esc(c.capsule)}" target="_blank" rel="noopener noreferrer">Open in LLM TimeMachine ↗</a>` : ''}
+    </div>`
+}
+
+// The model's summary: the three lines its changelog ends with (Added:,
+// Where:, Why:), a line that follows one of them continuing it. null when
+// the changelog has no Added: line.
+const summaries = new Map()
+function summaryOf(c) {
+  if (!summaries.has(c.sha)) {
+    const out = {}
+    let key = null
+    for (const line of String(c.changelog || '').split('\n')) {
+      const m = line.match(/^\s*[-*]?\s*\**(Added|Where|Why)\**\s*:\s*(.*)$/i)
+      if (m) { key = m[1][0].toUpperCase() + m[1].slice(1).toLowerCase(); out[key] = m[2].trim().replace(/^\p{Ll}/u, ch => ch.toUpperCase()) }
+      else if (key && line.trim()) out[key] += ` ${line.trim()}`
+    }
+    summaries.set(c.sha, out.Added ? out : null)
+  }
+  return summaries.get(c.sha)
+}
+const headline = c => summaryOf(c)?.Added || c.added[0] || c.subject
+
+// ------------------------------------------------------------- the quest
+const lifespan = f => (f && f.born != null && f.died != null ? ` (${f.born < 0 ? `${-f.born} BC` : f.born}–${f.died < 0 ? `${-f.died} BC` : f.died})` : '')
+function shareOf(c) {
+  const out = []
+  for (const name of c.hidFigures || []) {
+    const f = c.figures.find(x => x.name === name), d = c.dungeons.find(x => x.id === f?.dungeon)
+    out.push(`Hid <b>${esc(name)}</b>${esc(lifespan(f))} in ${esc(d?.name || f?.dungeon || 'a dungeon')}`)
+  }
+  for (const id of c.builtDungeons || []) out.push(`Built <b>${esc(c.dungeons.find(d => d.id === id)?.name || id)}</b>, a dungeon for the next figure`)
+  return out
+}
+// Who put a figure or a dungeon in the game: the first step that has it.
+function firstStep(has) {
+  const list = steps()
+  for (let i = 0; i < state.step; i++) if (has(list[i])) return { n: i + 1, c: list[i] }
+  return null
+}
+function renderChronicle() {
+  const v = state.step ? current() : T.bases[branch().base]
+  const figures = v?.figures || [], dungeons = v?.dungeons || []
+  const by = found => (found ? `${found.n === state.step ? 'new · ' : ''}step ${found.n} · ${esc(found.c.author)}` : 'in the base')
+  let out = figures.map(f => {
+    const found = firstStep(c => (c.hidFigures || []).includes(f.name))
+    return `<div class="figure${found?.n === state.step ? ' new' : ''}"><span class="figure-name">${esc(f.name)}</span>
+      <span class="figure-years">${esc(lifespan(f).replace(/[()]/g, '').trim() || '—')}</span>
+      <span class="figure-where">Lost in ${esc(dungeons.find(d => d.id === f.dungeon)?.name || f.dungeon || 'a dungeon')}</span>
+      <span class="figure-by">hidden ${by(found)}</span></div>`
+  }).join('')
+  for (const d of dungeons.filter(d => !figures.some(f => f.dungeon === d.id))) {
+    const found = firstStep(c => (c.builtDungeons || []).includes(d.id))
+    out += `<div class="figure waits"><span class="figure-name">${esc(d.name)}</span><span class="figure-where">Waits for its figure: the next model hides one here.</span>
+      <span class="figure-by">built ${by(found)}</span></div>`
+  }
+  $('figureGrid').innerHTML = out || '<p class="empty">No figure yet.</p>'
+}
+
+// ------------------------------------------------------------- versions
+const commonSteps = (a, b) => { let k = 0; while (k < a.steps.length && k < b.steps.length && a.steps[k] === b.steps[k]) k++; return k }
+const mainLine = () => T.branches.find(b => /(^|\/)main$/.test(b.name)) ?? T.branches[0]
+function branchLabel(b) {
+  const ref = mainLine()
+  if (b === ref) return 'Main line'
+  const k = commonSteps(b, ref), c = T.commits[b.steps[k]]
+  if (!c) return b.name
+  return `Step ${k + 1} by ${c.author}${c.passed ? '' : ' (broke the rules)'}`
+}
+function renderBranchPick() {
+  const box = $('branchPick'), b = branch()
+  if (T.branches.length < 2) {
+    box.innerHTML = `<span class="cap">Version</span><span class="branch-one" title="${esc(b.name)}">${esc(branchLabel(b))} <span>· ${stepsLabel(b.steps.length)}</span></span>`
+    return
+  }
+  box.innerHTML = `<label for="branch">Version</label><select id="branch">${T.branches.map(o =>
+    `<option value="${esc(o.name)}"${o === b ? ' selected' : ''}>${esc(branchLabel(o))} · ${stepsLabel(o.steps.length)}</option>`).join('')}</select>`
+}
+function forksOf(b) {
+  const out = {}
+  for (const o of T.branches) {
+    if (o === b) continue
+    const k = commonSteps(b, o)
+    if (o.steps.length > k) (out[k + 1] ??= []).push(o.name)
+  }
+  return out
+}
+const FORK_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="4" cy="3.5" r="1.8"/><circle cx="12" cy="3.5" r="1.8"/><circle cx="8" cy="12.5" r="1.8"/><path d="M4 5.3v.7a2.5 2.5 0 0 0 2.5 2.5h3A2.5 2.5 0 0 0 12 6v-.7M8 8.5v2.2"/></svg>'
+
+// The filmstrip: the base, every step, then the next step to come.
+function renderStrip() {
+  const list = steps(), forks = forksOf(branch())
+  let out = `<li><button type="button" class="frame" data-n="0" title="The base: where every model started" aria-label="The base"><span class="chip" style="--c: var(--dot)">0</span><span class="lbl">base</span><span class="bar"></span></button></li>`
+  list.forEach((c, i) => {
+    const n = i + 1, alt = forks[n]
+    const fork = alt ? `<button type="button" class="fork" data-branch="${esc(alt[0])}" data-n="${n}" title="Another version of step ${n}" aria-label="Show another version of step ${n}">${FORK_ICON}${alt.length + 1}</button>` : ''
+    out += `<li><button type="button" class="frame" data-n="${n}" title="Step ${n} · ${esc(c.author)} · ${esc(headline(c))}" aria-label="Step ${n}: ${esc(c.author)}${c.passed ? '' : ', broke the rules'}">
+      <span class="chip" style="--c:${colorOf(c.author)}">${n}</span><span class="lbl"></span><span class="bar"></span></button>${c.passed ? '' : '<span class="broke" aria-hidden="true">!</span>'}${fork}</li>`
+  })
+  const nf = forks[list.length + 1]
+  out += `<li><span class="frame next" aria-hidden="true"><span class="chip">+</span><span class="lbl">next</span><span class="bar"></span></span>${nf ? `<button type="button" class="fork" data-branch="${esc(nf[0])}" data-n="${list.length + 1}" title="Another version goes further">${FORK_ICON}${nf.length + 1}</button>` : ''}</li>`
+  $('strip').innerHTML = out
+}
+function updateStrip() {
+  for (const el of $('strip').querySelectorAll('.frame[data-n]')) {
+    const n = Number(el.dataset.n)
+    el.classList.toggle('on', n === state.step)
+    el.classList.toggle('later', n > state.step)
+    if (n === state.step) el.setAttribute('aria-current', 'step'); else el.removeAttribute('aria-current')
+  }
+  const on = $('strip').querySelector('.frame.on'), sc = $('stripScroll')
+  if (on && sc.scrollWidth > sc.clientWidth) {
+    const r = on.getBoundingClientRect(), s = sc.getBoundingClientRect()
+    if (r.left < s.left + 8 || r.right > s.right - 8) sc.scrollLeft += r.left - s.left - (s.width - r.width) / 2
+  }
+}
+
+// ------------------------------------------------------------- the map
+function renderMap() {
+  const rooms = roomsAt(state.step), before = new Set(roomsAt(state.step - 1).map(r => r.key))
+  const svg = $('map')
+  if (!rooms.length) { svg.setAttribute('viewBox', '0 0 300 60'); svg.innerHTML = '<text x="150" y="34" text-anchor="middle" fill="currentColor">No room yet</text>'; return }
+  const at = new Map(rooms.map(r => [r.key, r]))
+  const xy = k => k.split('_').map(Number)
+  const mist = new Set()
+  for (const r of rooms) { const [x, y] = xy(r.key); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const k = `${x + dx}_${y + dy}`; if (!at.has(k)) mist.add(k) } }
+  const all = [...rooms.map(r => r.key), ...mist].map(xy)
+  const x0 = Math.min(...all.map(p => p[0])), x1 = Math.max(...all.map(p => p[0])), y0 = Math.min(...all.map(p => p[1])), y1 = Math.max(...all.map(p => p[1]))
+  const CW = 132, CH = 92, G = 14
+  const px = x => (x - x0) * (CW + G) + 8, py = y => (y - y0) * (CH + G) + 8
+  const W = (x1 - x0 + 1) * (CW + G) + 2, H = (y1 - y0 + 1) * (CH + G) + 2
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`)
+  svg.setAttribute('width', W)
+  svg.setAttribute('height', H)
+  let out = ''
+  for (const k of mist) { const [x, y] = xy(k); out += `<g class="r-mist"><rect x="${px(x)}" y="${py(y)}" width="${CW}" height="${CH}" rx="8"/><text x="${px(x) + CW / 2}" y="${py(y) + CH / 2 + 4}">not built yet</text></g>` }
+  for (const r of rooms) {
+    const [x, y] = xy(r.key), isNew = state.step > 0 && !before.has(r.key)
+    const name = (r.name || r.key).length > 18 ? `${(r.name || r.key).slice(0, 17)}…` : (r.name || r.key)
+    out += `<g class="r-room${isNew ? ' new' : ''}"><title>${esc(r.name || r.key)} (${r.key})</title><rect x="${px(x)}" y="${py(y)}" width="${CW}" height="${CH}" rx="8"/>
+      <text x="${px(x) + CW / 2}" y="${py(y) + CH / 2}">${esc(name)}</text><text class="key" x="${px(x) + CW / 2}" y="${py(y) + CH / 2 + 16}">${r.key}${r.key === '0_0' ? ' · start' : ''}</text>
+      ${isNew ? `<text class="tag" x="${px(x) + CW / 2}" y="${py(y) + 18}">NEW</text>` : ''}</g>`
+  }
+  svg.innerHTML = out
+}
+
+function renderBuilders() {
+  const list = steps()
+  $('builderGrid').innerHTML = list.length ? list.map((c, i) => `
+    <button type="button" class="builder" data-n="${i + 1}" style="--c:${colorOf(c.author)}" aria-label="Show step ${i + 1}, ${esc(c.author)}">
+      <span class="builder-meta">step ${i + 1} · ${esc(makerOf(c))}${c.passed ? '' : ' · broke the rules'}</span>
+      <span class="builder-name">${esc(c.author)}</span>
+      <span class="builder-what">${esc(headline(c))}</span>
+      <span class="builder-meta">+${c.plus} −${c.minus} lines</span></button>`).join('') : '<p class="empty">No builder yet: the first step is coming.</p>'
+}
+
+function render() {
+  const n = steps().length, c = current()
+  $('count').textContent = state.step ? `Step ${state.step} / ${n}` : 'The base'
+  $('nowWho').innerHTML = c ? `${esc(c.author)} <span>· ${esc(headline(c))}</span>` : '<span>the hero, the meadow, the Willow Hollow and Ada Lovelace</span>'
+  $('prev').disabled = state.step <= 0
+  $('next').disabled = state.step >= n
+  renderLabel()
+  updateStrip()
+  renderMap()
+  renderChronicle()
+  renderStart()
+  loadGame()
+}
+function go(n) { state.step = Math.min(Math.max(n, 0), steps().length); render() }
+function setBranch(name, step) {
+  state.branch = name
+  state.step = Math.min(step ?? state.step, steps().length)
+  renderBranchPick()
+  renderStrip()
+  renderBuilders()
+  render()
+}
+
+function wire() {
+  $('start').addEventListener('click', () => { state.live = true; renderStart(); focusGame() })
+  $('restart').addEventListener('click', () => { state.live = true; renderStart(); loadGame(true) })
+  $('full').addEventListener('click', () => { state.live = true; renderStart(); $('game').requestFullscreen?.().catch(() => {}); focusGame() })
+  $('prev').addEventListener('click', () => go(state.step - 1))
+  $('next').addEventListener('click', () => go(state.step + 1))
+  $('branchPick').addEventListener('change', e => { if (e.target.id === 'branch') setBranch(e.target.value) })
+  $('timeline').addEventListener('keydown', e => {
+    if (e.target.tagName === 'SELECT') return
+    if (e.key === 'ArrowLeft') { go(state.step - 1); e.preventDefault() }
+    if (e.key === 'ArrowRight') { go(state.step + 1); e.preventDefault() }
+  })
+  $('strip').addEventListener('click', e => {
+    const fork = e.target.closest('.fork')
+    if (fork) return setBranch(fork.dataset.branch, Number(fork.dataset.n))
+    const el = e.target.closest('.frame[data-n]')
+    if (el) go(Number(el.dataset.n))
+  })
+  $('builderGrid').addEventListener('click', e => {
+    const el = e.target.closest('.builder')
+    if (!el) return
+    go(Number(el.dataset.n))
+    $('play').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
+  })
+}
+
+async function start() {
+  try {
+    T = await (await fetch('timeline.json', { cache: 'no-store' })).json()
+  } catch {
+    $('label').innerHTML = '<div class="empty"><h2>The game could not load</h2><p>timeline.json is missing: run <code>node build.mjs</code> and open <code>dist/</code>.</p></div>'
+    return
+  }
+  if (!T.branches.length) { $('label').innerHTML = '<div class="empty"><h2>Nothing to play yet</h2></div>'; return }
+  if (T.repo.owner) { const a = $('repoLink'); a.href = `https://github.com/${T.repo.owner}/${T.repo.name}`; a.hidden = false }
+  const capsule = Object.values(T.commits).map(c => c.capsule).find(Boolean)
+  if (capsule) $('footLeft').innerHTML = `Built through a <a href="${esc(capsule)}" target="_blank" rel="noopener noreferrer">Relay on LLM TimeMachine</a>`
+  wire()
+  fitScreen()
+  addEventListener('resize', fitScreen)
+  state.branch = branch().name
+  state.step = steps().length
+  renderBranchPick()
+  renderStrip()
+  renderBuilders()
+  render()
+}
+start()
+</script>
+</body>
+</html>

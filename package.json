@@ -1,0 +1,11 @@
+{
+  "name": "endless-quest",
+  "private": true,
+  "type": "module",
+  "description": "A video game built by AI models, one addition each, through a Relay on LLM TimeMachine.",
+  "scripts": {
+    "test": "node check.mjs",
+    "site": "node build.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
