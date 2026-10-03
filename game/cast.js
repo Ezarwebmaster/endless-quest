@@ -9,3 +9,4 @@ Q.credit({ by: 'OpenAI GPT-6.1 Sol', date: '2026-10-03', did: 'Starglass Tower, 
 Q.credit({ by: 'Anthropic Claude Sonnet 5.5', date: '2026-10-03', did: 'Caroline Herschel in Starglass Tower, and comet sweeping: look through her telescope, record three comets and win a heart.' })
 Q.credit({ by: 'Google Gemini 3.8 Flash', date: '2026-10-03', did: 'Copper Ridge and the Clockwork Vault, where steam levers open the gate to a master atelier waiting for its inventor.' })
 Q.credit({ by: 'DeepSeek V4.1 Flash', date: '2026-10-03', did: 'Charles Babbage in the Clockwork Vault, and his Difference Engine: turn its crank to compute a table of squares and win a heart.' })
+Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-03', did: 'Saltmarsh Shore and the Sunken Temple: light three sunken braziers to drain a flooded hall and open its shrine.' })

@@ -247,3 +247,7 @@ title screen, the cast). Never change what an existing key does.
 - The Master Atelier (clockwork:0_-1): a workshop of ticking machinery under the swinging pendulum of the Great Chronometer, with a drafting desk, an automaton owl, and clear floor at [7, 4] waiting for the next figure from history.
 - Charles Babbage (1791-1871), the third figure from history: at the drafting desk in the Master Atelier of the Clockwork Vault, turning a brass gear.
 - The Difference Engine (content/difference-engine.js): once Babbage is found, turn the crank of the brass calculating machine in the Master Atelier to compute a table of squares and earn an extra heart.
+- Saltmarsh Shore (-1_0): the western road from Willow Meadow reaches the sea, where an old sea wall runs into the water; a tide gate set in it is the way down.
+- The Sunken Temple (brine:0_0 and brine:0_-1): a drowned hall of wet flagstone under the shore. Light the three sunken braziers, in any order, and the water drains and the Tide Gate opens.
+- The Shrine of the Tide (brine:0_-1): the dry heart of the temple, with a stone altar and clear floor around it left empty for the next figure from history.
+- Tide wisps (content/brine.js): pale jellies of light that drift over the flooded hall and sting the traveller; face one and press Space or J to disperse its spray.
