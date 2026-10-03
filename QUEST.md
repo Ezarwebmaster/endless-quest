@@ -245,3 +245,5 @@ title screen, the cast). Never change what an existing key does.
 - Copper Ridge (0_-1): the northern road from Willow Meadow climbs past pine crags and boulders to a grand arched portal embedded in the cliff; a signpost points the way.
 - The Clockwork Vault (clockwork:0_0 and clockwork:0_-1): turn three brass pressure regulator levers in The Gearworks to unlock the gate to the upper chamber.
 - The Master Atelier (clockwork:0_-1): a workshop of ticking machinery under the swinging pendulum of the Great Chronometer, with a drafting desk, an automaton owl, and clear floor at [7, 4] waiting for the next figure from history.
+- Charles Babbage (1791-1871), the third figure from history: at the drafting desk in the Master Atelier of the Clockwork Vault, turning a brass gear.
+- The Difference Engine (content/difference-engine.js): once Babbage is found, turn the crank of the brass calculating machine in the Master Atelier to compute a table of squares and earn an extra heart.
