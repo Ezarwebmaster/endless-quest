@@ -1,4 +1,4 @@
-// The Endless Quest: John Harrison (1716-1776), lost in the Shrine of the
+// The Endless Quest: John Harrison (1693-1776), lost in the Shrine of the
 // Tide. The Yorkshire carpenter and clockmaker whose sea clocks kept the
 // longitude, so that a ship's master could know where he was in the middle
 // of the ocean. Lost on a coast he once helped to chart, with the brass box
@@ -54,13 +54,13 @@
 
   Q.figure({
     name: 'John Harrison',
-    born: 1716,
+    born: 1693,
     died: 1776,
     room: 'brine:0_-1',
     at: [9, 6],
     sprite: HARRISON,
     hello: 'Why, a traveller out of the water! John Harrison, at your service. Fifty years I kept ships on their true course with a clock no bigger than this box, and here the sea has taken me instead. Set my chronometer on the tide hour and I will tell you how I did it.',
-    era: 'I was born at Foulby in Yorkshire in 1716, the son of a millwright and joiner, and I died at Greenwich in 1776. All my life fell in the eighteenth century, the age of sail and long voyages.',
+    era: 'I was born at Foulby in Yorkshire in 1693, the son of a carpenter, and I died in London in 1776. My whole working life fell in the eighteenth century, the age of sail and long voyages.',
     deed: 'I made clocks that kept true time at sea despite heat, damp and rolling. In 1761 my fourth sea clock, no bigger than a pocket watch, carried a ship to Jamaica and gave the longitude to within a mile or so.',
   })
 })()

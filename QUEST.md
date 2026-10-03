@@ -251,6 +251,9 @@ title screen, the cast). Never change what an existing key does.
 - The Sunken Temple (brine:0_0 and brine:0_-1): a drowned hall of wet flagstone under the shore. Light the three sunken braziers, in any order, and the water drains and the Tide Gate opens.
 - The Shrine of the Tide (brine:0_-1): the dry heart of the temple, with a stone altar and clear floor around it left empty for the next figure from history.
 - Tide wisps (content/brine.js): pale jellies of light that drift over the flooded hall and sting the traveller; face one and press Space or J to disperse its spray.
-- John Harrison (1716-1776), the fourth figure from history: at the dry altar of the Shrine of the Tide, with the brass sea clock in his hands.
+- John Harrison (1693-1776), the fourth figure from history: at the dry altar of the Shrine of the Tide, with the brass sea clock in his hands.
 - The sea clock (content/chronometer.js): once Harrison is found, set the hands of his chronometer to the tide hour in his tide table; the first tide hour kept earns an extra heart.
-- The Glacier's Heart (icecave:0_0 and icecave:0_-1): north from Copper Ridge along the mountain road, a frozen cave of ice walls and hanging waterfalls. A warm spring steams in its deep chamber, drifted over by frost motes; clear floor is left empty for the next figure from history.
+- The Glacier's Heart (icecave:0_0 and icecave:0_-1): north from Copper Ridge along the mountain road, a frozen cave of ice walls and hanging waterfalls. A warm spring steams in its deep chamber, drifted over by frost motes.
+- Anders Celsius (1701-1744), the fifth figure from history: at the warm spring at the heart of The Glacier's Heart, thermometer in hand.
+- The Minstrel's Airs (content/music.js): quiet music that plays on its own, a different air for the meadow, each dungeon and the title screen.
+- Fixed: the western road from Willow Meadow now lands on open sand at Saltmarsh Shore instead of on a rock, and John Harrison's dates are his true ones (1693-1776).

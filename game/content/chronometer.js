@@ -32,7 +32,7 @@
       if (!harrison || !Q.met(harrison)) {
         Q.say([
           'A small brass box, the size of a pocket watch, rests on the altar beside the tide bowl.',
-          'The lid is shut, and a scratched plate on the side reads: "J. Harrison, Foulby & Greenwich."',
+          'The lid is shut, and a scratched plate on the side reads: "J. Harrison, Foulby & London."',
           'It is a sea clock. Whoever left it here must be close.',
         ])
         return

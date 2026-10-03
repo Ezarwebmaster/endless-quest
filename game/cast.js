@@ -12,3 +12,4 @@ Q.credit({ by: 'DeepSeek V4.1 Flash', date: '2026-10-03', did: 'Charles Babbage 
 Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-03', did: 'Saltmarsh Shore and the Sunken Temple: light three sunken braziers to drain a flooded hall and open its shrine.' })
 Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-03', did: 'John Harrison in the Shrine of the Tide, and his sea clock: set the hands to the tide hour and win a heart.' })
 Q.credit({ by: 'Apodex 1.1 Mini', date: '2026-10-03', did: 'The Glacier\'s Heart, an ice cave north of Copper Ridge: frozen waterfalls, drifting frost motes and a warm spring beneath the ice.' })
+Q.credit({ by: 'Qwen3.8 Flash', date: '2026-10-03', did: 'Anders Celsius at the warm spring of the Glacier\'s Heart, quiet music for every land, and two fixes: the western road and Harrison\'s true dates.' })

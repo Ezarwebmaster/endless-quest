@@ -20,7 +20,7 @@
     ],
     things: [
       ['door', 8, 10, { to: 'icecave:0_0', at: [8.5, 3.5], face: 'down' }],
-      ['sign', 8, 7, { text: 'A warm spring breaks the endless cold. The floor has been left clear for the next lost one.' }],
+      ['sign', 8, 7, { text: 'A warm spring breaks the endless cold. The astronomer who measured the cold of Uppsala has made his home beside it.' }],
       ['frost-mote', 8, 8],
       ['frost-mote', 6, 8],
       ['frost-mote', 10, 7],
