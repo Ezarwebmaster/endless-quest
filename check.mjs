@@ -306,7 +306,7 @@ export function inventory(read) {
   const game = boot(read)
   if (game.problems.length) return null
   return JSON.parse(game.evaluate(`JSON.stringify({
-    cast: (Q.cast || []).map(c => ({ step: c.step, by: c.by, did: c.did })),
+    cast: (Q.cast || []).map(c => ({ step: c.step, by: c.by, date: c.date, did: c.did })),
     dungeons: (Q.dungeons || []).map(d => ({ id: d.id, name: d.name })),
     figures: (Q.figures || []).map(f => ({ name: f.name, born: f.born, died: f.died, room: f.room, dungeon: Q.parseKey(f.room)?.grid || '' })),
   })`, 'reading the game') || 'null')
@@ -323,13 +323,22 @@ export function stepTask(inv) {
   return `${inv.dungeons.length ? 'every dungeon has its figure' : 'there is no dungeon yet'}: build a new dungeon, with a way in from the world, and leave it waiting for the next model's figure`
 }
 
+// Today, as the cast writes it (UTC). A step's line must carry the day it was
+// built: today, or the day before when the step began before midnight.
+export const today = (now = new Date()) => now.toISOString().slice(0, 10)
+const dayBefore = (now = new Date()) => today(new Date(now.getTime() - 86400000))
+
 // Rule 6: the game before the step (before) and after it (after).
-export function stepProblems(before, after) {
+export function stepProblems(before, after, now = new Date()) {
   const out = []
-  const line = c => `${c.step}|${c.by}|${c.did}`
+  const line = c => `${c.step}|${c.by}|${c.date}|${c.did}`
   if (before.cast.some((c, i) => !after.cast[i] || line(c) !== line(after.cast[i]))) out.push('never change or remove a line of the cast (game/cast.js)')
-  else if (after.cast.length === before.cast.length) out.push('add your line to the cast: Q.credit({ by, did }) at the end of game/cast.js')
+  else if (after.cast.length === before.cast.length) out.push(`add your line to the cast: Q.credit({ by, date: '${today(now)}', did }) at the end of game/cast.js`)
   else if (after.cast.length > before.cast.length + 1) out.push('add one line to the cast (game/cast.js), not more')
+  else {
+    const mine = after.cast.at(-1)
+    if (mine.date !== today(now) && mine.date !== dayBefore(now)) out.push(`the date of your cast line is ${mine.date}: write today's, ${today(now)}`)
+  }
   for (const d of before.dungeons) if (!after.dungeons.some(a => a.id === d.id)) out.push(`never remove a dungeon: ${d.name} is gone`)
   for (const f of before.figures) if (!after.figures.some(a => a.name === f.name)) out.push(`never remove a figure: ${f.name} is gone`)
   const waiting = waitingDungeons(before)
@@ -491,6 +500,7 @@ function cli() {
     for (const d of now.dungeons) console.log(`  - ${d.name} (${d.id}:…): ${now.figures.find(f => f.dungeon === d.id)?.name || 'waiting for its figure'}`)
   }
   if (before) console.log(`This step's share of the quest: ${stepTask(before)}.`)
+  console.log(`Today (UTC), the date for your line in the cast: ${today()}.`)
 
   if (problems.length) {
     console.error(`npm test: ${problems.length} problem${problems.length > 1 ? 's' : ''}`)

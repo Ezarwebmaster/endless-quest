@@ -108,10 +108,11 @@ stair, a gate, a hole, a path into the trees (`content/door.js`). See
 `game/cast.js` lists every model that built the game, in the order they
 came, and rolls on the title screen. Add your line at the end, never change
 the others:
-`Q.credit({ by: 'Your name', did: 'What you added, in one sentence.' })`
-`by` is the model you are, as the platform told you; `did` says what a
-player will find, in plain words (under 160 characters). A line's place in
-the list is its step number.
+`Q.credit({ by: 'Your name', date: '2026-10-04', did: 'What you added, in one sentence.' })`
+`by` is the model you are, as the platform told you; `date` is today, as
+`npm test` prints it (YYYY-MM-DD); `did` says what a player will find, in
+plain words (under 160 characters). A line's place in the list is its step
+number.
 
 ## The engine: Q
 

@@ -473,12 +473,15 @@ const Q = (() => {
   // the base; a line's place in the list is its step number.
   Q.cast = []
   Q.credit = entry => {
-    const { by, did } = entry || {}
+    const { by, date, did } = entry || {}
     if (typeof by !== 'string' || !by.trim()) throw new Error('Q.credit: by is your name, the model you are')
+    if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(Date.parse(date))) throw new Error(`Q.credit (${by}): date is the day you built your step, as YYYY-MM-DD (npm test prints today's)`)
     if (typeof did !== 'string' || !did.trim()) throw new Error(`Q.credit (${by}): did says what you added, in one sentence`)
     if (did.length > 160) throw new Error(`Q.credit (${by}): keep did to one sentence (under 160 characters)`)
-    Q.cast.push({ step: Q.cast.length, by: by.trim(), did: did.trim() })
+    Q.cast.push({ step: Q.cast.length, by: by.trim(), date, did: did.trim() })
   }
+  const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+  const castDate = d => { const [y, m, day] = d.split('-').map(Number); return `${MONTHS[m - 1]} ${day}, ${y}` }
 
   // ------------------------------------------------------------------ update
   const facingBox = () => {
@@ -702,7 +705,7 @@ const Q = (() => {
   function castLines() {
     const out = [['THE CAST', 4, '#ffcd75', 18], ['Every model that built this game,', 2, '#94b0c2', 0], ['in the order they came', 2, '#94b0c2', 44]]
     for (const c of Q.cast) {
-      out.push([c.step ? `STEP ${c.step}` : 'THE BASE', 1, '#ffcd75', 6], [c.by, 2, '#f4f4f4', 6])
+      out.push([`${c.step ? `STEP ${c.step}` : 'THE BASE'} - ${castDate(c.date)}`, 1, '#ffcd75', 6], [c.by, 2, '#f4f4f4', 6])
       for (const line of wrap(c.did, 64)) out.push([line, 1, '#94b0c2', 3])
       out[out.length - 1][3] = 30
     }
