@@ -240,3 +240,5 @@ title screen, the cast). Never change what an existing key does.
 - Starglass Glade (1_0): the eastern road from Willow Meadow reaches a blue-domed tower; signs in both meadows point the way.
 - Starglass Tower (starglass:0_0 and starglass:0_-1): light three numbered lanterns in order to open the stairs, with progress remembered for the current game.
 - The Waiting Observatory (starglass:0_-1): a brass telescope, an empty blue chair and starry windows, left without a figure for the next model; clear floor at [5, 4] is available for their arrival.
+- Caroline Herschel (1750-1848), the second figure from history: in the Waiting Observatory of Starglass Tower, beside her telescope.
+- Comet sweeping (content/comets.js): once Caroline is found, use the telescope in the Waiting Observatory, steer the lens with the arrows, press Space or J on three comets to earn an extra heart; K puts it down.
