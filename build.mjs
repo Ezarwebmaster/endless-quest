@@ -6,9 +6,11 @@
 // line in QUEST.md), what it changed, and whether it kept to the rules: the
 // ones a diff can show (check.mjs), and what `npm test` gave when the platform
 // played the step (the commit's Checks: and Broken: lines). The game's code
-// never runs here. Every branch is read; GitHub's API is never called.
+// never runs here: the pictures of the figures come from the game itself, in
+// the visitor's browser (see portraits below). Every branch is read; GitHub's
+// API is never called.
 import { execFileSync } from 'node:child_process'
-import { cpSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { changeProblems, linkProblems, questItems } from './check.mjs'
 
@@ -44,16 +46,53 @@ mkdirSync(OUT, { recursive: true })
 const blobs = new Map()
 const blob = id => { if (!blobs.has(id)) blobs.set(id, execFileSync('git', ['cat-file', 'blob', id], { maxBuffer: 64 * 1024 * 1024 })); return blobs.get(id) }
 const versions = {}
+// The site's helper, added at the end of every version's page (the game in
+// the repo never loads it). Once the game has loaded, in the visitor's
+// browser, it sends the site a picture of each figure from history as the
+// game draws them, for the Chronicle. It only reads Q; the site checks what
+// it receives.
+function portraits() {
+  addEventListener('load', () => {
+    try {
+      if (typeof Q === 'undefined' || !Array.isArray(Q.figures) || window.parent === window) return
+      const version = location.pathname.match(/\/v\/([0-9a-f]{40})\//)?.[1] ?? null
+      const figures = []
+      for (const f of Q.figures.slice(0, 200)) {
+        const s = (Array.isArray(f.frames) && f.frames[0]) || f.sprite
+        if (typeof f.name === 'string' && s?.canvas?.toDataURL) figures.push({ name: f.name, png: s.canvas.toDataURL('image/png') })
+      }
+      parent.postMessage({ type: 'quest:portraits', version, figures }, '*')
+    } catch {}
+  })
+}
+// The text of the string written after `key:` in some code ('The Glacier\'s
+// Heart' gives The Glacier's Heart), or null when there is none or it runs
+// past max characters.
+function stringAt(code, key, max) {
+  const at = code.match(new RegExp(`\\b${key}:\\s*(?=['"\`])`))
+  if (!at) return null
+  const q = code[at.index + at[0].length]
+  let out = ''
+  for (let i = at.index + at[0].length + 1; i < code.length && out.length <= max; i++) {
+    const ch = code[i]
+    if (ch === q) return out
+    if (ch === '\n' && q !== '`') return null
+    out += ch === '\\' ? code[++i] ?? '' : ch
+  }
+  return null
+}
 // The dungeons and the figures from history a script declares, read from its
 // text (comments left out); the code itself never runs here.
 function questOf(text, dungeons, figures) {
   const code = text.replace(/^\s*\/\/.*$/gm, '')
-  for (const m of code.matchAll(/\bQ\.dungeon\(\s*(['"`])([a-z][a-z0-9-]*)\1\s*,\s*\{[^}]*?\bname:\s*(['"`])(.{1,60}?)\3/g)) dungeons.push({ id: m[2], name: m[4] })
+  for (const m of code.matchAll(/\bQ\.dungeon\(\s*(['"`])([a-z][a-z0-9-]*)\1\s*,\s*\{([^}]*)/g)) {
+    const name = stringAt(m[3], 'name', 60)
+    if (name) dungeons.push({ id: m[2], name })
+  }
   for (const chunk of code.split(/\bQ\.figure\(\s*\{/).slice(1)) {
-    const str = k => chunk.match(new RegExp(`\\b${k}:\\s*(['"\`])(.{1,80}?)\\1`))?.[2] ?? null
     const num = k => { const m = chunk.match(new RegExp(`\\b${k}:\\s*(-?\\d{1,4})\\b`)); return m ? Number(m[1]) : null }
-    const name = str('name')
-    if (name) figures.push({ name, born: num('born'), died: num('died'), room: str('room') })
+    const name = stringAt(chunk, 'name', 80)
+    if (name) figures.push({ name, born: num('born'), died: num('died'), room: stringAt(chunk, 'room', 80) })
   }
 }
 // Writes game/ as it was at a commit to dist/v/<sha>/, and lists its rooms,
@@ -69,10 +108,18 @@ function version(sha) {
     writeFileSync(file, blob(id))
     const room = path.match(/^game\/content\/rooms\/(-?\d+_-?\d+)\.js$/)
     if (room) {
-      const name = blob(id).toString('utf8').match(/\bname:\s*(['"`])(.{1,48}?)\1/)?.[2] || null
+      // The room's own name, not the name of a tile the file declares first.
+      const text = blob(id).toString('utf8'), def = text.search(/\bQ\.room\(/)
+      const name = stringAt(def === -1 ? text : text.slice(def), 'name', 48) || null
       rooms.push({ key: room[1], name })
     }
     if (path.endsWith('.js')) questOf(blob(id).toString('utf8'), dungeons, figures)
+  }
+  const page = `${OUT}/v/${sha}/index.html`
+  if (existsSync(page)) {
+    const html = readFileSync(page, 'utf8'), tag = `<script>(${portraits})()</script>\n`
+    const end = html.toLowerCase().lastIndexOf('</body>')
+    writeFileSync(page, end === -1 ? `${html}\n${tag}` : html.slice(0, end) + tag + html.slice(end))
   }
   for (const f of figures) f.dungeon = f.room?.split(':')[0] ?? null
   return (versions[sha] = { sha, date: tryGit('show', '-s', '--format=%aI', sha).trim(), rooms, dungeons, figures })

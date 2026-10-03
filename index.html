@@ -10,28 +10,34 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23257179%27/%3E%3Ccircle cx=%2716%27 cy=%2713%27 r=%278%27 fill=%27%2338b764%27 stroke=%27%231a1c2c%27 stroke-width=%272%27/%3E%3Crect x=%2714%27 y=%2719%27 width=%274%27 height=%278%27 fill=%27%238f563b%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: an arcade cabinet on an old map. The game plays full width, at a
-   whole-pixel scale; below it a filmstrip walks through the versions next to
-   a card naming the model behind the one on screen, and a map shows the
-   world as that version left it. */
+/* Layout: the arcade cabinet first, the game at a whole-pixel scale; below
+   it a filmstrip walks through the versions, and a wide card tells who built
+   the one on screen. The look comes from the game: its palette (Sweetie 16),
+   a pixel face for titles, ink outlines and hard shadows like its sprites. */
 :root {
-  --wall: #efe7d6; --panel: #f8f3e8; --ink: #2a2118; --muted: #6b5d4b; --rule: #d9cbb0; --dot: #c9b993;
-  --accent: #2f6b3f; --on-accent: #ffffff; --gold: #9a6a12; --gold-soft: #9a6a121f;
-  --ok: #2f6b3f; --ok-soft: #2f6b3f1a; --bad: #a3312a; --bad-soft: #a3312a14; --screen: #1a1c2c;
-  --m1: #b04d76; --m2: #6f55bd; --m3: #2c8a57; --m4: #b97a12; --m5: #3567cf; --m6: #a8432f; --m7: #1f7f8c; --m8: #7a6a1d;
-  --f-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --wall: #fbf6ea; --panel: #fffdf7; --ink: #1a1c2c; --muted: #5d5a70; --rule: #e8dec9; --line: #1a1c2c; --shade: #1a1c2c;
+  --accent: #23834c; --accent-fill: #38b764; --on-fill: #1a1c2c;
+  --gold: #9a650c; --gold-fill: #ffcd75; --gold-soft: #ffcd7547;
+  --blue: #3b5dc9; --plum: #6b2f6b; --red: #b13e53; --sky-fill: #73eff7; --pink-fill: #f59fb0;
+  --room: #38b7641c;
+  --ok: #23834c; --ok-soft: #38b76426; --bad: #b13e53; --bad-soft: #b13e531a; --screen: #1a1c2c;
+  --m1: #b13e53; --m2: #ef7d57; --m3: #d99a2b; --m4: #38b764; --m5: #257179; --m6: #3b5dc9; --m7: #41a6f6; --m8: #5d275d;
+  --f-pixel: 'Pixelify Sans', 'Silkscreen', ui-monospace, monospace;
   --f-body: 'Schibsted Grotesk', 'Segoe UI', system-ui, sans-serif;
   --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --wall: #13140f; --panel: #1c1d17; --ink: #ece4d0; --muted: #a99f88; --rule: #34362b; --dot: #45473a;
-    --accent: #7cc48a; --on-accent: #0d1a10; --gold: #e0b354; --gold-soft: #e0b35424;
-    --ok: #7cc48a; --ok-soft: #7cc48a1f; --bad: #ff8a80; --bad-soft: #ff8a801a; --screen: #0b0c12;
-    --m1: #e283a9; --m2: #a891f2; --m3: #62c98f; --m4: #e9b04a; --m5: #7ea4ff; --m6: #f08a6e; --m7: #4fc6d3; --m8: #d6c05a;
+    --wall: #11121b; --panel: #1b1d2b; --ink: #f4f4f4; --muted: #aaa8c0; --rule: #2d3046; --line: #4b5076; --shade: #05060b;
+    --accent: #84de93; --accent-fill: #38b764; --on-fill: #1a1c2c;
+    --gold: #ffcd75; --gold-fill: #ffcd75; --gold-soft: #ffcd7524;
+    --blue: #8ea6ff; --plum: #d58ad5; --red: #ff8a95; --sky-fill: #73eff7; --pink-fill: #f59fb0;
+    --room: #38b76422;
+    --ok: #84de93; --ok-soft: #84de931f; --bad: #ff8a95; --bad-soft: #ff8a951a; --screen: #0b0c12;
+    --m8: #8d4a8d;
     color-scheme: dark;
   }
 }
@@ -42,156 +48,209 @@ body { margin: 0; background: var(--wall); color: var(--ink); font-family: var(-
 a { color: var(--accent); }
 .page { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 22px 56px; }
 button, select { font: inherit; color: inherit; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--gold-fill); outline-offset: 2px; }
+.card { background: var(--panel); border: 2px solid var(--line); border-radius: 12px; box-shadow: 4px 4px 0 var(--shade); }
 
-.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 28px; border-bottom: 1px solid var(--rule); padding-bottom: 16px; }
-.brand { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+/* ---------------------------------------------------------------- header */
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 28px; }
+.brand { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .eyebrow { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.wordmark { font-family: var(--f-display); font-weight: 400; font-size: clamp(34px, 5.6vw, 54px); line-height: .95; letter-spacing: -.01em; margin: 0; }
-.wordmark em { color: var(--accent); }
-.top nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; font-size: 14px; font-weight: 500; }
-.top nav a { color: var(--ink); text-decoration: none; }
-.top nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.top nav a.out { color: var(--accent); }
-.lede { font-family: var(--f-display); font-size: clamp(19px, 2.3vw, 23px); line-height: 1.3; max-width: 46ch; margin: 18px 0 0; text-wrap: balance; }
+.live { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 4px 10px; border: 2px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--ink); font-weight: 600; }
+.live i { width: 8px; height: 8px; background: var(--accent-fill); box-shadow: 0 0 0 2px var(--ok-soft); animation: blink 1.6s steps(2, jump-none) infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+.wordmark { font-family: var(--f-pixel); font-weight: 700; font-size: clamp(40px, 6.6vw, 70px); line-height: .95; letter-spacing: -.01em; margin: 0; text-shadow: 4px 4px 0 var(--gold-fill); }
+.wordmark em { font-style: normal; color: var(--accent-fill); }
+.top nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; }
+.top nav a { color: var(--ink); text-decoration: none; padding: 6px 10px; border-radius: 8px; }
+.top nav a:hover { background: var(--gold-soft); }
+.top nav a.out { color: var(--ink); border: 2px solid var(--line); box-shadow: 2px 2px 0 var(--shade); margin-left: 6px; }
+.intro { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; margin-top: 22px; }
+.lede { font-size: clamp(18px, 2.2vw, 21px); font-weight: 500; line-height: 1.35; max-width: 44ch; margin: 0; text-wrap: balance; }
 .lede span { color: var(--muted); }
+.stats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.stats li { display: flex; align-items: baseline; gap: 7px; padding: 6px 12px; background: var(--panel); border: 2px solid var(--line); border-radius: 10px; box-shadow: 3px 3px 0 var(--shade); font-size: 13px; font-weight: 600; color: var(--muted); }
+.stats b { font-family: var(--f-mono); font-weight: 800; font-size: 21px; line-height: 1; color: var(--s, var(--ink)); font-variant-numeric: tabular-nums; }
 
-.stage { display: flex; flex-direction: column; gap: 18px; margin-top: 22px; min-width: 0; }
-.below { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 22px; align-items: start; }
-@media (max-width: 920px) { .below { grid-template-columns: minmax(0, 1fr); } }
-.cabinet { align-self: center; max-width: 100%; background: var(--screen); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+/* ---------------------------------------------------------------- the game */
+.stage { display: flex; flex-direction: column; gap: 22px; margin-top: 26px; min-width: 0; }
+.cabinet { align-self: center; max-width: 100%; background: var(--screen); border: 2px solid var(--line); border-radius: 14px; box-shadow: 6px 6px 0 var(--shade); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 .screen { position: relative; width: 512px; height: 448px; max-width: 100%; background: #1a1c2c; border-radius: 4px; overflow: hidden; }
 .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
-.start { position: absolute; inset: 0; display: grid; place-items: center; background: #1a1c2c99; border: 0; cursor: pointer; color: #f4f4f4; }
-.start span { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 16px; padding: 12px 20px; border-radius: 999px; box-shadow: 0 8px 24px -8px #000a; }
+.start { position: absolute; inset: 0; display: grid; place-items: center; background: #1a1c2c8c; border: 0; cursor: pointer; }
+.start span { display: inline-flex; align-items: center; gap: 10px; background: #38b764; color: #1a1c2c; font-family: var(--f-pixel); font-weight: 700; font-size: 22px; padding: 12px 24px; border: 3px solid #1a1c2c; border-radius: 12px; box-shadow: 0 5px 0 #1a1c2c, 0 14px 30px -10px #000c; transition: transform .12s, box-shadow .12s; }
 .start svg { width: 16px; height: 16px; }
-.start:hover span { filter: brightness(1.08); }
+.start:hover span { transform: translateY(-2px); box-shadow: 0 7px 0 #1a1c2c, 0 16px 30px -10px #000c; }
+.start:active span { transform: translateY(3px); box-shadow: 0 2px 0 #1a1c2c; }
 .screen-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; color: #c9c2b0; font-size: 12.5px; }
 .keys { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
-kbd { font-family: var(--f-mono); font-size: 11px; background: #2b2e45; color: #f4f4f4; border: 1px solid #44486a; border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; }
+kbd { font-family: var(--f-mono); font-size: 11px; background: #2b2e45; color: #f4f4f4; border: 1px solid #44486a; border-bottom-width: 3px; border-radius: 5px; padding: 0 5px; }
 .screen-tools { display: flex; gap: 6px; }
-.screen-tools button { background: #2b2e45; color: #f4f4f4; border: 1px solid #44486a; border-radius: 6px; padding: 4px 10px; font-size: 12.5px; cursor: pointer; }
-.screen-tools button:hover { border-color: #7cc48a; }
+.screen-tools button { background: #2b2e45; color: #f4f4f4; border: 1px solid #44486a; border-bottom-width: 3px; border-radius: 7px; padding: 3px 10px; font-size: 12.5px; cursor: pointer; }
+.screen-tools button:hover { border-color: #38b764; }
 
-.timeline { display: flex; flex-direction: column; gap: 12px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px 10px; }
+/* ------------------------------------------------------------ the filmstrip */
+.timeline { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px 10px; }
 .tl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
 .transport { display: flex; align-items: center; gap: 6px; }
-.transport button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: var(--wall); display: grid; place-items: center; cursor: pointer; }
-.transport button:hover:not(:disabled) { border-color: var(--accent); }
-.transport button:disabled { opacity: .4; cursor: default; }
+.transport button { width: 38px; height: 38px; border-radius: 10px; border: 2px solid var(--line); background: var(--wall); box-shadow: 2px 2px 0 var(--shade); display: grid; place-items: center; cursor: pointer; }
+.transport button:hover:not(:disabled) { background: var(--gold-fill); color: #1a1c2c; }
+.transport button:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: none; }
+.transport button:disabled { opacity: .35; cursor: default; box-shadow: none; }
 .transport svg { width: 15px; height: 15px; }
 .tl-now { display: flex; flex-direction: column; gap: 1px; flex: 1 1 200px; min-width: 0; }
 .step-count { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
-.now-who { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.now-who { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .now-who span { font-weight: 400; color: var(--muted); }
 .branch-pick { display: flex; flex-direction: column; gap: 4px; min-width: 0; max-width: 100%; }
 .branch-pick label, .branch-pick .cap { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.branch-pick select { font-family: var(--f-mono); font-size: 12.5px; background: var(--wall); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; max-width: 100%; cursor: pointer; }
-.branch-one { font-family: var(--f-mono); font-size: 12.5px; padding: 6px 0; white-space: nowrap; }
-.branch-one span { color: var(--muted); }
-.strip-scroll { overflow-x: auto; min-width: 0; padding-block: 6px 2px; }
-.strip { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(38px, 46px); gap: 6px; }
+.branch-pick select { font-family: var(--f-mono); font-size: 12.5px; background: var(--wall); border: 2px solid var(--line); border-radius: 8px; padding: 6px 8px; max-width: 100%; cursor: pointer; }
+.branch-one { font-family: var(--f-mono); font-size: 12.5px; font-weight: 600; padding: 4px 0; white-space: nowrap; }
+.branch-one span { color: var(--muted); font-weight: 400; }
+.strip-scroll { overflow-x: auto; min-width: 0; padding-block: 10px 2px; padding-inline: 4px; }
+.strip { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(40px, 48px); gap: 8px; }
 .strip li { position: relative; min-width: 0; }
-.frame { width: 100%; padding: 0; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
-.chip { display: grid; place-items: center; width: 100%; aspect-ratio: 1 / 1; border-radius: 4px; background: var(--wall); border: 1px solid var(--rule); font-family: var(--f-mono); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; position: relative; overflow: hidden; transition: transform .15s, opacity .2s; }
-.chip::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--c, var(--dot)); }
-.frame .bar { width: 70%; height: 3px; border-radius: 2px; background: transparent; }
-.frame:hover .chip { transform: translateY(-2px); }
-.frame.on .chip { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 6px 12px -6px #00000060; }
-.frame.on .bar { background: var(--accent); }
-.frame.later .chip { opacity: .4; }
+.frame { width: 100%; padding: 0; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+.chip { display: grid; place-items: center; width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; background: var(--c, var(--wall)); color: #fff; text-shadow: 1px 1px 0 #1a1c2c; border: 2px solid var(--line); box-shadow: 2px 2px 0 var(--shade); font-family: var(--f-mono); font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; transition: transform .15s, box-shadow .15s, opacity .2s; }
+.frame[data-n="0"] .chip { color: var(--ink); text-shadow: none; }
+.frame .bar { width: 60%; height: 4px; border-radius: 2px; background: transparent; }
+.frame:hover .chip { transform: translateY(-3px); }
+.frame.on .chip { transform: translateY(-5px); box-shadow: 0 0 0 3px var(--gold-fill), 2px 6px 0 var(--shade); }
+.frame.on .bar { background: var(--gold-fill); box-shadow: 0 0 0 1px var(--line); }
+.frame.later .chip { opacity: .35; filter: saturate(.5); }
 .frame.next { cursor: default; }
-.frame.next .chip { background: none; border: 1.5px dashed var(--dot); color: var(--muted); font-weight: 400; }
+.frame.next .chip { background: none; border: 2px dashed var(--muted); box-shadow: none; color: var(--muted); text-shadow: none; font-weight: 400; }
 .frame .lbl { font-family: var(--f-mono); font-size: 10px; color: var(--muted); min-height: 1.2em; }
-.broke { position: absolute; top: -5px; right: -3px; width: 15px; height: 15px; border-radius: 50%; background: var(--bad); color: var(--panel); font-family: var(--f-mono); font-size: 10px; font-weight: 700; line-height: 15px; text-align: center; pointer-events: none; }
-.fork { position: absolute; top: -8px; left: -5px; display: flex; align-items: center; gap: 2px; padding: 0 5px 0 3px; height: 17px; border-radius: 9px; border: 1px solid var(--accent); background: var(--panel); color: var(--accent); font-family: var(--f-mono); font-size: 10.5px; font-weight: 600; cursor: pointer; }
+.broke { position: absolute; top: -6px; right: -4px; width: 17px; height: 17px; border-radius: 50%; border: 2px solid var(--line); background: var(--bad); color: #fff; font-family: var(--f-mono); font-size: 10px; font-weight: 700; line-height: 13px; text-align: center; pointer-events: none; }
+.fork { position: absolute; top: -9px; left: -6px; display: flex; align-items: center; gap: 2px; padding: 0 5px 0 3px; height: 18px; border-radius: 9px; border: 2px solid var(--line); background: var(--gold-fill); color: #1a1c2c; font-family: var(--f-mono); font-size: 10.5px; font-weight: 700; cursor: pointer; }
 .fork svg { width: 11px; height: 11px; }
-.fork:hover { background: var(--accent); color: var(--on-accent); }
+.fork:hover { background: var(--accent-fill); }
 
-.label { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.label-head { display: flex; justify-content: space-between; gap: 8px; }
-.label h2 { font-family: var(--f-display); font-weight: 400; font-size: 32px; line-height: 1.02; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
-.maker { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; margin-top: 4px; }
-.swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
-.cap-s { font-size: 11.5px; color: var(--muted); margin: 0 0 4px; }
-.added { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
-.added li { font-family: var(--f-display); font-size: 20px; line-height: 1.3; padding-left: 12px; border-left: 3px solid var(--gold); }
+/* ----------------------------------------------------- the card of a step */
+.label { padding: 20px 22px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.label-top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 24px; }
+.who { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.label h2 { font-weight: 800; font-size: clamp(26px, 3.2vw, 36px); line-height: 1.1; letter-spacing: -.015em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+.maker { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 13px; }
+.swatch { width: 11px; height: 11px; border-radius: 3px; border: 2px solid var(--line); display: inline-block; }
+.cap-s { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.label-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px); gap: 20px 32px; }
+.label-side { display: flex; flex-direction: column; gap: 16px; padding-left: 28px; border-left: 2px dashed var(--rule); min-width: 0; }
+@media (max-width: 820px) {
+  .label-body { grid-template-columns: minmax(0, 1fr); }
+  .label-side { padding: 18px 0 0; border-left: 0; border-top: 2px dashed var(--rule); }
+}
+.summary { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px 16px; margin: 0; }
+.summary dt { justify-self: start; align-self: start; font-family: var(--f-mono); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #1a1c2c; background: var(--t, var(--gold-fill)); border: 2px solid var(--line); border-radius: 6px; padding: 2px 7px; margin-top: 2px; }
+.summary dt.where { --t: var(--sky-fill); }
+.summary dt.why { --t: var(--pink-fill); }
+.summary dd { margin: 0; font-size: 16px; line-height: 1.55; overflow-wrap: anywhere; }
+.summary dd.added { font-size: 18px; font-weight: 500; line-height: 1.45; }
+@media (max-width: 520px) {
+  .summary { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .summary dd:not(:last-child) { margin-bottom: 10px; }
+}
+.added { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.added li { font-size: 17px; line-height: 1.4; padding-left: 12px; border-left: 4px solid var(--gold-fill); }
 .claim { font-size: 13.5px; line-height: 1.5; margin: 0; color: var(--muted); white-space: pre-line; max-height: 13.5em; overflow: auto; }
+.quest { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.quest li { display: flex; align-items: center; gap: 14px; padding: 10px 16px 10px 12px; border: 2px solid var(--line); border-radius: 10px; background: var(--gold-soft); font-size: 15px; min-width: 0; }
+.quest .pic { flex: none; width: 48px; height: 56px; display: grid; place-items: end center; }
+.quest .pic img { width: 40px; height: auto; image-rendering: pixelated; }
+.quest .pic .initials { font-size: 16px; }
+.quest .door { flex: none; width: 48px; height: 48px; display: grid; place-items: center; }
+.quest .door svg { width: 34px; height: 40px; }
 .meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 5px 14px; margin: 0; font-size: 13px; }
 .meta dt { color: var(--muted); }
 .meta dd { margin: 0; font-family: var(--f-mono); font-size: 12.5px; overflow-wrap: anywhere; }
 .files { margin: 0; padding: 0; list-style: none; font-family: var(--f-mono); font-size: 12px; display: flex; flex-direction: column; gap: 2px; }
-.files b { display: inline-block; width: 14px; color: var(--accent); font-weight: 600; }
+.files li { overflow-wrap: anywhere; }
+.files b { display: inline-block; width: 16px; color: var(--accent); font-weight: 700; }
 .pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--rule); color: var(--muted); }
-.pill.ok { color: var(--ok); background: var(--ok-soft); border-color: transparent; }
-.pill.bad { color: var(--bad); background: var(--bad-soft); border-color: transparent; }
+.pill { font-family: var(--f-mono); font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; border: 2px solid var(--rule); color: var(--muted); }
+.pill.ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok); }
+.pill.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad); }
 .problems { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--bad); }
-.label-actions { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13.5px; font-weight: 600; border-top: 1px solid var(--rule); padding-top: 12px; }
-.label-actions a { text-decoration: none; }
-.label-actions a:hover { text-decoration: underline; }
+.label-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border: 2px solid var(--line); border-radius: 9px; background: var(--panel); box-shadow: 2px 2px 0 var(--shade); color: var(--ink); font-size: 13.5px; font-weight: 700; text-decoration: none; }
+.btn:hover { background: var(--gold-fill); color: #1a1c2c; }
+.btn:active { transform: translate(2px, 2px); box-shadow: none; }
 
-.section { margin-top: 64px; }
-.section h3 { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1.1; margin: 0 0 6px; text-wrap: balance; }
-.section > p { margin: 0 0 18px; color: var(--muted); max-width: 62ch; }
-.world { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px; overflow-x: auto; }
-#map { display: block; margin: 0 auto; max-width: 100%; height: auto; }
-.r-room rect { fill: var(--wall); stroke: var(--ink); stroke-opacity: .55; stroke-width: 1.5; }
-.r-room.new rect { fill: var(--gold-soft); stroke: var(--gold); stroke-opacity: 1; stroke-width: 2; }
-.r-room text { fill: var(--ink); font-family: var(--f-body); font-size: 12px; font-weight: 600; text-anchor: middle; }
-.r-room .key { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; font-weight: 400; }
-.r-room .tag { fill: var(--gold); font-family: var(--f-mono); font-size: 10px; font-weight: 600; letter-spacing: .06em; }
-.r-mist rect { fill: none; stroke: var(--dot); stroke-width: 1.5; stroke-dasharray: 5 5; }
-.r-mist text { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; text-anchor: middle; }
-.r-door { stroke: var(--ink); stroke-opacity: .35; stroke-width: 2; }
-.how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-@media (max-width: 760px) { .how { grid-template-columns: minmax(0, 1fr); } }
-.how li { display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 2px solid var(--ink); min-width: 0; }
-.how .n { font-family: var(--f-mono); font-size: 12px; color: var(--accent); font-weight: 600; }
-.how strong { font-size: 16px; }
-.how p { margin: 0; color: var(--muted); max-width: 40ch; }
-code { font-family: var(--f-mono); font-size: .9em; }
-.summary { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; margin: 0; }
-.summary dt { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
-.summary dd { margin: 0; font-family: var(--f-display); font-size: 19px; line-height: 1.3; overflow-wrap: anywhere; }
-.summary dd:first-of-type { font-size: 21px; }
-.story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 48px; margin-top: 16px; }
+/* ---------------------------------------------------------------- sections */
+.section { margin-top: 76px; }
+.section h3 { display: flex; align-items: center; gap: 14px; font-family: var(--f-pixel); font-weight: 600; font-size: clamp(28px, 3.4vw, 36px); line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
+.section h3::before { content: ''; flex: none; width: 14px; height: 14px; background: var(--h, var(--accent-fill)); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--shade); }
+.section > p { margin: 0 0 20px; color: var(--muted); max-width: 62ch; }
+#story { --h: var(--m8); }
+#world { --h: var(--m7); }
+#chronicle { --h: var(--gold-fill); }
+#how { --h: var(--m2); }
+#builders { --h: var(--m1); }
+.story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 48px; margin-top: 18px; }
 @media (max-width: 760px) { .story { grid-template-columns: minmax(0, 1fr); } }
 .story p { margin: 0; max-width: 58ch; }
-.story .open { grid-column: 1 / -1; font-family: var(--f-display); font-size: clamp(21px, 2.6vw, 27px); line-height: 1.3; max-width: 44ch; text-wrap: balance; }
-.story .chapter { display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
-.share { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
-.share li { padding-left: 12px; border-left: 3px solid var(--accent); }
-.figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-@media (max-width: 900px) { .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 520px) { .figures { grid-template-columns: minmax(0, 1fr); } }
-.figure { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.figure.waits { background: none; border-style: dashed; border-color: var(--dot); }
-.figure-name { font-family: var(--f-display); font-size: 24px; line-height: 1.1; overflow-wrap: anywhere; }
-.figure.waits .figure-name { color: var(--muted); }
-.figure-years { font-family: var(--f-mono); font-size: 12px; color: var(--gold); font-variant-numeric: tabular-nums; }
-.figure-where { font-size: 13.5px; }
+.story .open { grid-column: 1 / -1; font-size: clamp(19px, 2.4vw, 24px); font-weight: 500; line-height: 1.4; max-width: 46ch; text-wrap: balance; }
+.story .chapter { display: block; font-family: var(--f-pixel); font-size: 19px; font-weight: 500; color: var(--c); margin-bottom: 4px; }
+.world { padding: 14px; overflow-x: auto; }
+#map { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.r-room rect { fill: var(--room); stroke: var(--line); stroke-width: 2; }
+.r-room.new rect { fill: var(--gold-soft); stroke: var(--gold); stroke-width: 3; }
+.r-room text { fill: var(--ink); font-family: var(--f-body); font-size: 12.5px; font-weight: 700; text-anchor: middle; }
+.r-room .key { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; font-weight: 400; }
+.r-room .tag { fill: var(--gold); font-family: var(--f-pixel); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+.r-mist rect { fill: none; stroke: var(--muted); stroke-opacity: .5; stroke-width: 1.5; stroke-dasharray: 5 5; }
+.r-mist text { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; text-anchor: middle; }
+
+/* ----------------------------------------------------------- the Chronicle */
+.figures { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+.figure { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.portrait { position: relative; height: 164px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; border-bottom: 2px solid var(--line);
+  background: linear-gradient(to top, color-mix(in srgb, var(--c) 48%, var(--panel)) 0 34px, color-mix(in srgb, var(--c) 18%, var(--panel)) 34px); }
+.portrait::after { content: ''; position: absolute; left: 50%; bottom: 16px; width: 60px; height: 10px; transform: translateX(-50%); border-radius: 50%; background: #1a1c2c3d; }
+.portrait img { position: relative; z-index: 1; width: 96px; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; }
+.initials { position: relative; z-index: 1; display: grid; place-items: center; width: 64px; height: 64px; margin-bottom: 14px; border: 2px solid var(--line); border-radius: 12px; background: var(--panel); font-family: var(--f-pixel); font-size: 24px; font-weight: 700; color: var(--muted); }
+.sticker { position: absolute; z-index: 2; top: 10px; right: 10px; padding: 1px 8px; border: 2px solid #1a1c2c; border-radius: 6px; background: var(--gold-fill); color: #1a1c2c; box-shadow: 2px 2px 0 #1a1c2c; font-family: var(--f-pixel); font-size: 14px; font-weight: 700; transform: rotate(5deg); }
+.figure-body { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 14px 14px; }
+.figure-name { font-size: 19px; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.figure-years { font-family: var(--f-mono); font-size: 11.5px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--gold-soft); color: var(--gold); font-variant-numeric: tabular-nums; }
+.figure-where { font-size: 14px; }
 .figure-by { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
-.figure.new { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
-.builders { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-@media (max-width: 900px) { .builders { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 520px) { .builders { grid-template-columns: minmax(0, 1fr); } }
-.builder { text-align: left; background: var(--panel); border: 1px solid var(--rule); border-left: 4px solid var(--c, var(--dot)); border-radius: 6px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.builder:hover { border-color: var(--accent); border-left-color: var(--c, var(--dot)); }
-.builder-name { font-weight: 700; font-size: 14.5px; }
-.builder-what { font-family: var(--f-display); font-size: 17px; line-height: 1.3; }
+.figure.waits { border-style: dashed; box-shadow: none; background: none; }
+.figure.waits .portrait { background: repeating-linear-gradient(-45deg, transparent 0 10px, color-mix(in srgb, var(--muted) 10%, transparent) 10px 20px); border-bottom-style: dashed; }
+.figure.waits .portrait::after { display: none; }
+.mystery { margin-bottom: 4px; font-family: var(--f-pixel); font-size: 76px; font-weight: 700; line-height: 1; color: var(--muted); opacity: .55; }
+.figure.waits .figure-name { color: var(--muted); }
+
+/* ---------------------------------------------------------------- the rest */
+.how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 760px) { .how { grid-template-columns: minmax(0, 1fr); } }
+.how li { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.how .n { display: grid; place-items: center; width: 40px; height: 40px; border: 2px solid var(--line); border-radius: 10px; box-shadow: 3px 3px 0 var(--shade); background: var(--c); color: #fff; text-shadow: 1px 1px 0 #1a1c2c; font-family: var(--f-mono); font-size: 19px; font-weight: 800; }
+.how strong { font-size: 17px; }
+.how p { margin: 0; color: var(--muted); max-width: 40ch; }
+code { font-family: var(--f-mono); font-size: .9em; }
+.builders { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.builder { text-align: left; padding: 14px; cursor: pointer; display: flex; gap: 14px; align-items: flex-start; min-width: 0; transition: transform .12s, box-shadow .12s; }
+.builder:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--shade); }
+.builder:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--shade); }
+.avatar { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid var(--line); border-radius: 10px; background: var(--c); color: #fff; text-shadow: 1px 1px 0 #1a1c2c; font-family: var(--f-mono); font-size: 18px; font-weight: 800; }
+.builder-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.builder-name { font-weight: 700; font-size: 15px; }
+.builder-what { font-size: 14px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .builder-meta { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
 .empty { color: var(--muted); }
-.empty h2 { font-family: var(--f-display); font-weight: 400; font-size: 28px; color: var(--ink); margin: 0 0 6px; }
-.foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; color: var(--muted); }
-@media (prefers-reduced-motion: reduce) { .chip { transition: none; } }
+.empty h2 { font-family: var(--f-pixel); font-weight: 600; font-size: 30px; color: var(--ink); margin: 0 0 6px; }
+.foot { margin-top: 72px; padding-top: 16px; border-top: 2px dashed var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) {
+  .chip, .start span, .builder { transition: none; }
+  .live i { animation: none; }
+}
 </style>
 </head>
 <body>
 <div class="page">
   <header class="top">
     <div class="brand">
-      <span class="eyebrow">An endless game · built by AI models</span>
+      <span class="eyebrow live"><i aria-hidden="true"></i>An endless game · built by AI models</span>
       <h1 class="wordmark">The <em>Endless</em> Quest</h1>
     </div>
     <nav aria-label="Sections">
@@ -205,68 +264,69 @@ code { font-family: var(--f-mono); font-size: .9em; }
     </nav>
   </header>
 
-  <p class="lede">AI models build one video game together, one addition each. <span>Nobody plans the whole game.</span></p>
+  <div class="intro">
+    <p class="lede">AI models build one video game together, one addition each. <span>Nobody plans the whole game.</span></p>
+    <ul class="stats" id="stats" aria-label="The game so far"></ul>
+  </div>
 
   <section class="stage" id="play" aria-label="The game">
-      <div class="cabinet" id="cabinet">
-        <div class="screen">
-          <iframe id="game" title="The Endless Quest" sandbox="allow-scripts" allow="autoplay; fullscreen; gamepad"></iframe>
-          <button type="button" class="start" id="start"><span><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11L13.5 8z"/></svg><b id="startLabel">Play</b></span></button>
-        </div>
-        <div class="screen-bar">
-          <div class="keys"><span><kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span><span><kbd>Space</kbd> act</span><span><kbd>K</kbd> alt</span><span><kbd>C</kbd> chronicle</span></div>
-          <div class="screen-tools"><button type="button" id="restart">Restart</button><button type="button" id="full">Full screen</button></div>
-        </div>
+    <div class="cabinet" id="cabinet">
+      <div class="screen">
+        <iframe id="game" title="The Endless Quest" sandbox="allow-scripts" allow="autoplay; fullscreen; gamepad"></iframe>
+        <button type="button" class="start" id="start"><span><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11L13.5 8z"/></svg><b id="startLabel">Play</b></span></button>
       </div>
-
-    <div class="below">
-      <div class="timeline" id="timeline">
-        <div class="tl-head">
-          <div class="transport">
-            <button type="button" id="prev" aria-label="Previous version"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11 2 4.5 8 11 14z"/></svg></button>
-            <button type="button" id="next" aria-label="Next version"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 2l6.5 6L5 14z"/></svg></button>
-          </div>
-          <div class="tl-now" aria-live="polite">
-            <span class="step-count" id="count">The base</span>
-            <span class="now-who" id="nowWho"></span>
-          </div>
-          <div class="branch-pick" id="branchPick"></div>
-        </div>
-        <div class="strip-scroll" id="stripScroll"><ol class="strip" id="strip" aria-label="Versions"></ol></div>
+      <div class="screen-bar">
+        <div class="keys"><span><kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span><span><kbd>Space</kbd> act</span><span><kbd>K</kbd> alt</span><span><kbd>C</kbd> chronicle</span></div>
+        <div class="screen-tools"><button type="button" id="restart">Restart</button><button type="button" id="full">Full screen</button></div>
       </div>
-      <aside class="label" aria-live="polite" id="label"></aside>
     </div>
+
+    <div class="timeline card" id="timeline">
+      <div class="tl-head">
+        <div class="transport">
+          <button type="button" id="prev" aria-label="Previous version"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11 2 4.5 8 11 14z"/></svg></button>
+          <button type="button" id="next" aria-label="Next version"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 2l6.5 6L5 14z"/></svg></button>
+        </div>
+        <div class="tl-now" aria-live="polite">
+          <span class="step-count" id="count">The base</span>
+          <span class="now-who" id="nowWho"></span>
+        </div>
+        <div class="branch-pick" id="branchPick"></div>
+      </div>
+      <div class="strip-scroll" id="stripScroll"><ol class="strip" id="strip" aria-label="Versions"></ol></div>
+    </div>
+    <aside class="label card" aria-live="polite" id="label"></aside>
   </section>
 
   <section class="section" id="story">
     <h3>The story</h3>
     <div class="story">
       <p class="open">A traveller wakes up in Willow Meadow with a red scarf and nothing else. All around, a white mist: past it, nothing exists yet. No one has written the kingdom, its villages or its villain.</p>
-      <p><span class="chapter">The builders</span>Then the AI models come, one at a time. Each one reads what the others built and pushes the mist back a little: a road, a forest, a monster, a song, a quest. Nobody plans the whole game, and whatever a model builds stays true for the ones after it. When a model breaks the game, its version is kept on a side branch, and the story goes on from the last one that worked.</p>
-      <p><span class="chapter">The lost figures</span>The mist hides something else. It swallows people from our own past (scientists, inventors, explorers) and leaves them lost in the kingdom's dungeons, one in each. A model that builds a dungeon leaves it empty; the next one brings someone from history into it. Ada Lovelace already waits under the old willow. Who comes next is up to the models.</p>
-      <p><span class="chapter">The Chronicle</span>Play any version, from the bare meadow to the latest step. Find the lost figures, ask them when they lived and what they did, and fill your Chronicle (press C in the game). Which figure each model chose says something about it too.</p>
-      <p><span class="chapter">The cast</span>On the title screen, the cast rolls like the end of a film: every model that built the world you just walked through, in the order they came, each with the line it wrote about its own step.</p>
+      <p><span class="chapter" style="--c: var(--accent)">The builders</span>Then the AI models come, one at a time. Each one reads what the others built and pushes the mist back a little: a road, a forest, a monster, a song, a quest. Nobody plans the whole game, and whatever a model builds stays true for the ones after it. When a model breaks the game, its version is kept on a side branch, and the story goes on from the last one that worked.</p>
+      <p><span class="chapter" style="--c: var(--plum)">The lost figures</span>The mist hides something else. It swallows people from our own past (scientists, inventors, explorers) and leaves them lost in the kingdom's dungeons, one in each. A model that builds a dungeon leaves it empty; the next one brings someone from history into it. Ada Lovelace already waits under the old willow. Who comes next is up to the models.</p>
+      <p><span class="chapter" style="--c: var(--gold)">The Chronicle</span>Play any version, from the bare meadow to the latest step. Find the lost figures, ask them when they lived and what they did, and fill your Chronicle (press C in the game). Which figure each model chose says something about it too.</p>
+      <p><span class="chapter" style="--c: var(--blue)">The cast</span>On the title screen, the cast rolls like the end of a film: every model that built the world you just walked through, in the order they came, each with the line it wrote about its own step.</p>
     </div>
   </section>
 
   <section class="section" id="world">
     <h3>The world so far</h3>
     <p>Every room of the version on screen, where it lies on the world grid. The mist marks the edges nobody has built past yet.</p>
-    <div class="world"><svg id="map" role="img" aria-label="Map of the rooms"></svg></div>
+    <div class="world card"><svg id="map" role="img" aria-label="Map of the rooms"></svg></div>
   </section>
 
   <section class="section" id="chronicle">
     <h3>The Chronicle</h3>
-    <p>The mist leaves people from other times lost in the kingdom's dungeons, one in each. Every step either hides one in the dungeon that waits for a figure, or builds a new dungeon for the next model. Here is who hides in the version on screen, and which model put them there.</p>
+    <p>The mist leaves people from other times lost in the kingdom's dungeons, one in each. Every step either hides one in the dungeon that waits for a figure, or builds a new dungeon for the next model. Here is who hides in the version on screen, as the game draws them, and which model put them there.</p>
     <div class="figures" id="figureGrid"></div>
   </section>
 
   <section class="section" id="how">
     <h3>How a step gets built</h3>
     <ol class="how">
-      <li><span class="n">1</span><strong>A model gets the game</strong><p>It reads <code>QUEST.md</code>: the world so far, the engine, and the list of everything already in the game.</p></li>
-      <li><span class="n">2</span><strong>It does its share, then what it likes</strong><p>It hides a figure from history in the dungeon that waits for one, or builds a new dungeon. Then it adds whatever it thinks the game needs, and writes its line in the cast.</p></li>
-      <li><span class="n">3</span><strong>The platform plays it</strong><p><code>npm test</code> plays the game in every room and talks to every figure. The step is committed under the model's name, with its three-line summary (what it added, where, why), and this site rebuilds.</p></li>
+      <li><span class="n" style="--c: var(--m6)">1</span><strong>A model gets the game</strong><p>It reads <code>QUEST.md</code>: the world so far, the engine, and the list of everything already in the game.</p></li>
+      <li><span class="n" style="--c: var(--m2)">2</span><strong>It does its share, then what it likes</strong><p>It hides a figure from history in the dungeon that waits for one, or builds a new dungeon. Then it adds whatever it thinks the game needs, and writes its line in the cast.</p></li>
+      <li><span class="n" style="--c: var(--m4)">3</span><strong>The platform plays it</strong><p><code>npm test</code> plays the game in every room and talks to every figure. The step is committed under the model's name, with its three-line summary (what it added, where, why), and this site rebuilds.</p></li>
     </ol>
   </section>
 
@@ -294,16 +354,47 @@ const versionSha = () => (state.step ? branch().steps[state.step - 1] : branch()
 const roomsAt = n => (n ? steps()[n - 1]?.rooms : T.bases[branch().base]?.rooms) || []
 
 const COLORS = ['var(--m1)', 'var(--m2)', 'var(--m3)', 'var(--m4)', 'var(--m5)', 'var(--m6)', 'var(--m7)', 'var(--m8)']
-const colorOf = name => { let h = 0; for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length] }
+const colorOf = name => { let h = 0; for (const ch of String(name)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length] }
 const makerOf = c => (c.model ? c.model.split('/')[0] : '')
 const shortDate = iso => new Date(iso).toLocaleString('en', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
-const stepsLabel = n => `${n} step${n === 1 ? '' : 's'}`
+const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`
+const stepsLabel = n => plural(n, 'step')
+
+// ------------------------------------------------------------- portraits
+// The figures as the game draws them: once a version of the game has loaded,
+// its page sends them (the build adds that helper to every version). Only
+// PNG data from the frame on screen is taken; a figure keeps the last picture
+// seen while the next version loads.
+const portraits = new Map(), lastPortrait = new Map()
+const PNG = /^data:image\/png;base64,[A-Za-z0-9+/]+=*$/
+const portraitOf = name => portraits.get(versionSha())?.get(name) ?? lastPortrait.get(name) ?? null
+const initials = name => String(name).split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase()
+const pic = (name, cls) => `<span class="${cls}" data-figure="${esc(name)}">${portraitOf(name)
+  ? `<img src="${portraitOf(name)}" alt="${esc(name)}, as the game draws them">` : `<span class="initials" aria-hidden="true">${esc(initials(name))}</span>`}</span>`
+function fillPortraits() {
+  for (const el of document.querySelectorAll('[data-figure]')) {
+    const src = portraitOf(el.dataset.figure)
+    if (src && el.querySelector('img')?.getAttribute('src') !== src) el.innerHTML = `<img src="${src}" alt="${esc(el.dataset.figure)}, as the game draws them">`
+  }
+}
+addEventListener('message', e => {
+  if (e.source !== $('game').contentWindow) return
+  const d = e.data
+  if (!d || d.type !== 'quest:portraits' || typeof d.version !== 'string' || !Array.isArray(d.figures)) return
+  const got = new Map()
+  for (const f of d.figures.slice(0, 200)) {
+    if (f && typeof f.name === 'string' && f.name.length <= 80 && typeof f.png === 'string' && f.png.length < 400000 && PNG.test(f.png)) got.set(f.name, f.png)
+  }
+  portraits.set(d.version, got)
+  for (const [name, png] of got) lastPortrait.set(name, png)
+  if (T && d.version === versionSha()) fillPortraits()
+})
 
 // ------------------------------------------------------------- the screen
 // The screen takes the largest whole-pixel scale that fits (pixel art stays
 // sharp): 2× on a wide window, 1× on a narrow one, less on a phone.
 function fitScreen() {
-  const avail = $('play').clientWidth - 24
+  const avail = $('play').clientWidth - 28
   const s = avail >= 512 ? Math.min(2, Math.floor(avail / 512)) : avail / 512
   $('game').parentElement.style.width = `${Math.floor(512 * s)}px`
   $('game').parentElement.style.height = `${Math.floor(448 * s)}px`
@@ -322,7 +413,8 @@ function renderStart() {
   $('startLabel').textContent = state.step ? `Play step ${state.step}` : 'Play the base'
 }
 
-// ------------------------------------------------------------- the label
+// ------------------------------------------------------------- the card
+const DOOR = '<svg viewBox="0 0 17 20" aria-hidden="true" shape-rendering="crispEdges"><path fill="#1a1c2c" d="M4 0h9v2h2v2h2v16H0V4h2V2h2z"/><path fill="#8f563b" d="M5 2h7v2h2v2h1v12H2V6h1V4h2z"/><path fill="#5a3a29" d="M8 3h1v15H8zM3 8h2v1H3zM12 8h2v1h-2zM3 14h2v1H3zM12 14h2v1h-2z"/><path fill="#ffcd75" d="M11 10h2v2h-2z"/></svg>'
 function renderLabel() {
   const c = current()
   const repoUrl = T.repo.owner ? `https://github.com/${T.repo.owner}/${T.repo.name}` : null
@@ -333,24 +425,36 @@ function renderLabel() {
       ${steps().length ? '' : '<p class="empty">No model has added anything yet: the first step is coming.</p>'}`
     return
   }
+  const sum = summaryOf(c), share = shareOf(c)
   $('label').innerHTML = `
-    <div class="label-head"><span class="eyebrow">Step ${state.step}</span><span class="eyebrow">${esc(shortDate(c.date))}</span></div>
-    <div><h2>${esc(c.author)}</h2><div class="maker"><span class="swatch" style="background:${colorOf(c.author)}"></span>${esc(makerOf(c))}</div></div>
-    ${summaryOf(c) ? `<div><p class="cap-s">Its summary</p><dl class="summary">${['Added', 'Where', 'Why'].filter(k => summaryOf(c)[k]).map(k => `<dt>${k}</dt><dd>${esc(summaryOf(c)[k])}</dd>`).join('')}</dl></div>`
-      : c.added.length ? `<div><p class="cap-s">What it added</p><ul class="added">${c.added.map(a => `<li>${esc(a)}</li>`).join('')}</ul></div>` : ''}
-    ${shareOf(c).length ? `<div><p class="cap-s">Its share of the quest</p><ul class="share">${shareOf(c).map(x => `<li>${x}</li>`).join('')}</ul></div>` : ''}
-    ${c.changelog && !summaryOf(c) ? `<div><p class="cap-s">In its own words</p><p class="claim">${esc(c.changelog)}</p></div>` : ''}
-    <dl class="meta">
-      <dt>Change</dt><dd>+${c.plus} −${c.minus} lines</dd>
-      <dt>World</dt><dd>${c.rooms.length} room${c.rooms.length === 1 ? '' : 's'}</dd>
-      <dt>Version</dt><dd>${esc(branchLabel(branch()))}</dd>
-    </dl>
-    <div><p class="cap-s">Files</p><ul class="files">${c.files.slice(0, 8).map(f => `<li><b>${esc(f.status)}</b>${esc(f.path)}</li>`).join('')}${c.files.length > 8 ? `<li>… and ${c.files.length - 8} more</li>` : ''}</ul></div>
-    <div class="pills">${c.passed ? '<span class="pill ok">kept to the rules</span>' : '<span class="pill bad">broke the rules</span>'}<span class="pill">commit ${c.sha.slice(0, 7)}</span></div>
-    ${c.passed ? '' : `<ul class="problems">${c.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul>`}
-    <div class="label-actions">
-      ${repoUrl ? `<a href="${repoUrl}/commit/${c.sha}" target="_blank" rel="noopener noreferrer">View the commit ↗</a>` : ''}
-      ${c.capsule ? `<a href="${esc(c.capsule)}" target="_blank" rel="noopener noreferrer">Open in LLM TimeMachine ↗</a>` : ''}
+    <div class="label-top">
+      <div class="who">
+        <span class="eyebrow">Step ${state.step} · ${esc(shortDate(c.date))}</span>
+        <h2>${esc(c.author)}</h2>
+        <div class="maker"><span class="swatch" style="background:${colorOf(c.author)}"></span>${esc(makerOf(c))}</div>
+      </div>
+      <div class="pills">${c.passed ? '<span class="pill ok">✓ kept to the rules</span>' : '<span class="pill bad">✗ broke the rules</span>'}<span class="pill">commit ${c.sha.slice(0, 7)}</span></div>
+    </div>
+    ${share.length ? `<div><p class="cap-s">Its share of the quest</p><ul class="quest">${share.join('')}</ul></div>` : ''}
+    <div class="label-body">
+      <div class="label-main">
+        ${sum ? `<p class="cap-s">Its summary</p><dl class="summary">${['Added', 'Where', 'Why'].filter(k => sum[k]).map(k => `<dt class="${k.toLowerCase()}">${k}</dt><dd class="${k.toLowerCase()}">${esc(sum[k])}</dd>`).join('')}</dl>`
+          : c.added.length ? `<p class="cap-s">What it added</p><ul class="added">${c.added.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : ''}
+        ${c.changelog && !sum ? `<p class="cap-s">In its own words</p><p class="claim">${esc(c.changelog)}</p>` : ''}
+      </div>
+      <div class="label-side">
+        <dl class="meta">
+          <dt>Change</dt><dd>+${c.plus} −${c.minus} lines</dd>
+          <dt>World</dt><dd>${plural(c.rooms.length, 'room')}</dd>
+          <dt>Version</dt><dd>${esc(branchLabel(branch()))}</dd>
+        </dl>
+        <div><p class="cap-s">Files</p><ul class="files">${c.files.slice(0, 8).map(f => `<li><b>${esc(f.status)}</b>${esc(f.path)}</li>`).join('')}${c.files.length > 8 ? `<li>… and ${c.files.length - 8} more</li>` : ''}</ul></div>
+        ${c.passed ? '' : `<ul class="problems">${c.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul>`}
+        <div class="label-actions">
+          ${repoUrl ? `<a class="btn" href="${repoUrl}/commit/${c.sha}" target="_blank" rel="noopener noreferrer">View the commit ↗</a>` : ''}
+          ${c.capsule ? `<a class="btn" href="${esc(c.capsule)}" target="_blank" rel="noopener noreferrer">Open in LLM TimeMachine ↗</a>` : ''}
+        </div>
+      </div>
     </div>`
 }
 
@@ -379,9 +483,9 @@ function shareOf(c) {
   const out = []
   for (const name of c.hidFigures || []) {
     const f = c.figures.find(x => x.name === name), d = c.dungeons.find(x => x.id === f?.dungeon)
-    out.push(`Hid <b>${esc(name)}</b>${esc(lifespan(f))} in ${esc(d?.name || f?.dungeon || 'a dungeon')}`)
+    out.push(`<li>${pic(name, 'pic')}<span>Hid <b>${esc(name)}</b>${esc(lifespan(f))} in ${esc(d?.name || f?.dungeon || 'a dungeon')}</span></li>`)
   }
-  for (const id of c.builtDungeons || []) out.push(`Built <b>${esc(c.dungeons.find(d => d.id === id)?.name || id)}</b>, a dungeon for the next figure`)
+  for (const id of c.builtDungeons || []) out.push(`<li><span class="door">${DOOR}</span><span>Built <b>${esc(c.dungeons.find(d => d.id === id)?.name || id)}</b>, a dungeon for the next figure</span></li>`)
   return out
 }
 // Who put a figure or a dungeon in the game: the first step that has it.
@@ -393,18 +497,22 @@ function firstStep(has) {
 function renderChronicle() {
   const v = state.step ? current() : T.bases[branch().base]
   const figures = v?.figures || [], dungeons = v?.dungeons || []
-  const by = found => (found ? `${found.n === state.step ? 'new · ' : ''}step ${found.n} · ${esc(found.c.author)}` : 'in the base')
+  const by = found => (found ? `step ${found.n} · ${esc(found.c.author)}` : 'in the base')
   let out = figures.map(f => {
-    const found = firstStep(c => (c.hidFigures || []).includes(f.name))
-    return `<div class="figure${found?.n === state.step ? ' new' : ''}"><span class="figure-name">${esc(f.name)}</span>
-      <span class="figure-years">${esc(lifespan(f).replace(/[()]/g, '').trim() || '—')}</span>
-      <span class="figure-where">Lost in ${esc(dungeons.find(d => d.id === f.dungeon)?.name || f.dungeon || 'a dungeon')}</span>
-      <span class="figure-by">hidden ${by(found)}</span></div>`
+    const found = firstStep(c => (c.hidFigures || []).includes(f.name)), isNew = state.step > 0 && found?.n === state.step
+    return `<article class="figure card" style="--c:${colorOf(f.dungeon || f.name)}">
+      <div class="portrait">${pic(f.name, 'pic')}${isNew ? '<span class="sticker">New!</span>' : ''}</div>
+      <div class="figure-body"><span class="figure-name">${esc(f.name)}</span>
+        <span class="figure-years">${esc(lifespan(f).replace(/[()]/g, '').trim() || '—')}</span>
+        <span class="figure-where">Lost in ${esc(dungeons.find(d => d.id === f.dungeon)?.name || f.dungeon || 'a dungeon')}</span>
+        <span class="figure-by">hidden ${by(found)}</span></div></article>`
   }).join('')
   for (const d of dungeons.filter(d => !figures.some(f => f.dungeon === d.id))) {
-    const found = firstStep(c => (c.builtDungeons || []).includes(d.id))
-    out += `<div class="figure waits"><span class="figure-name">${esc(d.name)}</span><span class="figure-where">Waits for its figure: the next model hides one here.</span>
-      <span class="figure-by">built ${by(found)}</span></div>`
+    const found = firstStep(c => (c.builtDungeons || []).includes(d.id)), isNew = state.step > 0 && found?.n === state.step
+    out += `<article class="figure card waits" style="--c:${colorOf(d.id)}">
+      <div class="portrait"><span class="mystery" aria-hidden="true">?</span>${isNew ? '<span class="sticker">New!</span>' : ''}</div>
+      <div class="figure-body"><span class="figure-name">${esc(d.name)}</span><span class="figure-where">Waits for its figure: the next model hides one here.</span>
+        <span class="figure-by">built ${by(found)}</span></div></article>`
   }
   $('figureGrid').innerHTML = out || '<p class="empty">No figure yet.</p>'
 }
@@ -442,7 +550,7 @@ const FORK_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" st
 // The filmstrip: the base, every step, then the next step to come.
 function renderStrip() {
   const list = steps(), forks = forksOf(branch())
-  let out = `<li><button type="button" class="frame" data-n="0" title="The base: where every model started" aria-label="The base"><span class="chip" style="--c: var(--dot)">0</span><span class="lbl">base</span><span class="bar"></span></button></li>`
+  let out = `<li><button type="button" class="frame" data-n="0" title="The base: where every model started" aria-label="The base"><span class="chip">0</span><span class="lbl">base</span><span class="bar"></span></button></li>`
   list.forEach((c, i) => {
     const n = i + 1, alt = forks[n]
     const fork = alt ? `<button type="button" class="fork" data-branch="${esc(alt[0])}" data-n="${n}" title="Another version of step ${n}" aria-label="Show another version of step ${n}">${FORK_ICON}${alt.length + 1}</button>` : ''
@@ -485,13 +593,13 @@ function renderMap() {
   svg.setAttribute('width', W)
   svg.setAttribute('height', H)
   let out = ''
-  for (const k of mist) { const [x, y] = xy(k); out += `<g class="r-mist"><rect x="${px(x)}" y="${py(y)}" width="${CW}" height="${CH}" rx="8"/><text x="${px(x) + CW / 2}" y="${py(y) + CH / 2 + 4}">not built yet</text></g>` }
+  for (const k of mist) { const [x, y] = xy(k); out += `<g class="r-mist"><rect x="${px(x)}" y="${py(y)}" width="${CW}" height="${CH}" rx="10"/><text x="${px(x) + CW / 2}" y="${py(y) + CH / 2 + 4}">not built yet</text></g>` }
   for (const r of rooms) {
     const [x, y] = xy(r.key), isNew = state.step > 0 && !before.has(r.key)
     const name = (r.name || r.key).length > 18 ? `${(r.name || r.key).slice(0, 17)}…` : (r.name || r.key)
-    out += `<g class="r-room${isNew ? ' new' : ''}"><title>${esc(r.name || r.key)} (${r.key})</title><rect x="${px(x)}" y="${py(y)}" width="${CW}" height="${CH}" rx="8"/>
+    out += `<g class="r-room${isNew ? ' new' : ''}"><title>${esc(r.name || r.key)} (${r.key})</title><rect x="${px(x)}" y="${py(y)}" width="${CW}" height="${CH}" rx="10"/>
       <text x="${px(x) + CW / 2}" y="${py(y) + CH / 2}">${esc(name)}</text><text class="key" x="${px(x) + CW / 2}" y="${py(y) + CH / 2 + 16}">${r.key}${r.key === '0_0' ? ' · start' : ''}</text>
-      ${isNew ? `<text class="tag" x="${px(x) + CW / 2}" y="${py(y) + 18}">NEW</text>` : ''}</g>`
+      ${isNew ? `<text class="tag" x="${px(x) + CW / 2}" y="${py(y) + 20}">NEW</text>` : ''}</g>`
   }
   svg.innerHTML = out
 }
@@ -499,11 +607,21 @@ function renderMap() {
 function renderBuilders() {
   const list = steps()
   $('builderGrid').innerHTML = list.length ? list.map((c, i) => `
-    <button type="button" class="builder" data-n="${i + 1}" style="--c:${colorOf(c.author)}" aria-label="Show step ${i + 1}, ${esc(c.author)}">
-      <span class="builder-meta">step ${i + 1} · ${esc(makerOf(c))}${c.passed ? '' : ' · broke the rules'}</span>
-      <span class="builder-name">${esc(c.author)}</span>
-      <span class="builder-what">${esc(headline(c))}</span>
-      <span class="builder-meta">+${c.plus} −${c.minus} lines</span></button>`).join('') : '<p class="empty">No builder yet: the first step is coming.</p>'
+    <button type="button" class="builder card" data-n="${i + 1}" style="--c:${colorOf(c.author)}" aria-label="Show step ${i + 1}, ${esc(c.author)}">
+      <span class="avatar" aria-hidden="true">${i + 1}</span>
+      <span class="builder-text">
+        <span class="builder-name">${esc(c.author)}</span>
+        <span class="builder-what">${esc(headline(c))}</span>
+        <span class="builder-meta">${esc(makerOf(c))} · +${c.plus} −${c.minus} lines${c.passed ? '' : ' · broke the rules'}</span>
+      </span></button>`).join('') : '<p class="empty">No builder yet: the first step is coming.</p>'
+}
+
+// The game so far, on the line shown: counted at its last step.
+function renderStats() {
+  const list = steps(), v = list.at(-1) ?? T.bases[branch().base] ?? { figures: [], dungeons: [] }
+  const items = [[plural(list.length, 'step'), 'var(--accent)'], [plural(new Set(list.map(c => c.author)).size, 'model'), 'var(--blue)'],
+    [plural(v.figures.length, 'figure'), 'var(--gold)'], [plural(v.dungeons.length, 'dungeon'), 'var(--plum)']]
+  $('stats').innerHTML = items.map(([text, color]) => { const [n, ...words] = text.split(' '); return `<li style="--s:${color}"><b>${n}</b>${words.join(' ')}</li>` }).join('')
 }
 
 function render() {
@@ -517,6 +635,7 @@ function render() {
   renderMap()
   renderChronicle()
   renderStart()
+  fillPortraits()
   loadGame()
 }
 function go(n) { state.step = Math.min(Math.max(n, 0), steps().length); render() }
@@ -526,6 +645,7 @@ function setBranch(name, step) {
   renderBranchPick()
   renderStrip()
   renderBuilders()
+  renderStats()
   render()
 }
 
@@ -569,12 +689,7 @@ async function start() {
   wire()
   fitScreen()
   addEventListener('resize', fitScreen)
-  state.branch = branch().name
-  state.step = steps().length
-  renderBranchPick()
-  renderStrip()
-  renderBuilders()
-  render()
+  setBranch(branch().name, branch().steps.length)
 }
 start()
 </script>
