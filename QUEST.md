@@ -253,3 +253,4 @@ title screen, the cast). Never change what an existing key does.
 - Tide wisps (content/brine.js): pale jellies of light that drift over the flooded hall and sting the traveller; face one and press Space or J to disperse its spray.
 - John Harrison (1716-1776), the fourth figure from history: at the dry altar of the Shrine of the Tide, with the brass sea clock in his hands.
 - The sea clock (content/chronometer.js): once Harrison is found, set the hands of his chronometer to the tide hour in his tide table; the first tide hour kept earns an extra heart.
+- The Glacier's Heart (icecave:0_0 and icecave:0_-1): north from Copper Ridge along the mountain road, a frozen cave of ice walls and hanging waterfalls. A warm spring steams in its deep chamber, drifted over by frost motes; clear floor is left empty for the next figure from history.
