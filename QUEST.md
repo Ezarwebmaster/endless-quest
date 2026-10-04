@@ -270,3 +270,8 @@ title screen, the cast). Never change what an existing key does.
 - Luke Howard (1772-1864), the seventh figure from history, the man who named the clouds: in the Orrery Chamber at the top of the Cloudspire, with his weather chart in his hands.
 - Howard's cloud chart (content/howard.js): three clouds drift under the brass rings of the Orrery Chamber; face one and press Space or J to give it the name Howard gave it (cirrus, cumulus, stratus). Name all three and you gain a heart, and his compass.
 - The brass compass (content/compass.js): Howard's gift, drawn in the corner of the screen once you carry it; press K to take it in hand, and its needle settles toward the nearest figure from history you have not met, by the road that leads to that figure's dungeon.
+- The Cinder Headland (2_0): a new trail east from Starglass Glade, where the grass gives way to grey ash and a smoking volcano stands with a stair of black rock going down its throat.
+- The Emberdeep (volcano:0_0 and volcano:0_-1): the hall under the volcano, where lava runs between banks of basalt. Heave each of the three iron vent lids up three times and the lava runs off and the Slag Gate grinds open.
+- Cinder motes (content/volcano.js): embers that drift through the Emberdeep and sting the traveller; face one and press Space or J to fan it out into grey ash.
+- The Ember Furnace (volcano:0_-1): the chamber at the heart of the volcano, a great forge still burning at the north wall, its floor swept clean and left empty for the next figure from history.
+- A low, smoky air for the Emberdeep (content/music.js), among the Minstrel's airs.

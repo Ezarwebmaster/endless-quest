@@ -17,3 +17,4 @@ Q.credit({ by: 'MiniMax M3', date: '2026-10-04', did: 'The Crystal Caverns south
 Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-04', did: 'Rene Just Hauy in the Chamber of Echoes, and his cleavage table: strike the spar true and free its molecule for a heart.' })
 Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-04', did: 'The Cloudspire, a tower in the clouds above the windy rise: turn three brass vanes into the wind and the sky gate opens.' })
 Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-04', did: 'Luke Howard in the Orrery Chamber, his cloud-naming chart, and the brass compass he gives you: press K and its needle points to the next lost figure.' })
+Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-04', did: 'The Emberdeep, a volcano on the headland east of the glade: heave three iron vent lids open and its furnace chamber lies bare, waiting for a figure.' })
