@@ -16,10 +16,10 @@
       'X_w~~~~~~~~~~w_X',
       'X_w~~~~~~~~~~w_X',
       'X____w____w____X',
-      'XXXXXXXXXXXXXXXX',
+      'XXXXXXX_XXXXXXXX',
     ],
     things: [
-      ['door', 7, 10, { to: '-1_0', at: [7, 10.5], face: 'down' }],
+      ['door', 7, 11, { to: '-1_0', at: [7, 10.5], face: 'down' }],
       ['tide-brazier', 3, 2, { number: 1 }],
       ['tide-brazier', 12, 2, { number: 2 }],
       ['tide-brazier', 3, 10, { number: 3 }],

@@ -56,7 +56,7 @@
     ],
     things: [
       ['sign', 5, 8, { text: 'Saltmarsh Shore. The western road ends at the sea, and an old sea wall runs out into the water. The tide gate in it is open: the Sunken Temple lies below.' }],
-      ['door', 7, 9, { to: 'brine:0_0', at: [7.5, 9.5], face: 'up' }],
+      ['door', 7, 9, { to: 'brine:0_0', at: [7.5, 10], face: 'up' }],
       ['sign', 6, 2, { text: 'A new road leaves Willow Meadow to the west, over the salt grass to the shore.' }],
     ],
     draw() {

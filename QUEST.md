@@ -256,4 +256,8 @@ title screen, the cast). Never change what an existing key does.
 - The Glacier's Heart (icecave:0_0 and icecave:0_-1): north from Copper Ridge along the mountain road, a frozen cave of ice walls and hanging waterfalls. A warm spring steams in its deep chamber, drifted over by frost motes.
 - Anders Celsius (1701-1744), the fifth figure from history: at the warm spring at the heart of The Glacier's Heart, thermometer in hand.
 - The Minstrel's Airs (content/music.js): quiet music that plays on its own, a different air for the meadow, each dungeon and the title screen.
+- The South Hollow (0_1): a meadow path south of Willow Meadow, the long grass parting around a dark mouth in the hillside.
+- The Crystal Caverns (crystal:0_0 and crystal:0_-1): a cave of dark stone and singing crystals, south of the meadow. Light the three crystal pedestals and the crystal door slides open.
+- The Chamber of Echoes (crystal:0_-1): the inner heart of the caverns, its floor swept clean and crystals singing in the hall above, left empty for the next figure from history.
 - Fixed: the western road from Willow Meadow now lands on open sand at Saltmarsh Shore instead of on a rock, and John Harrison's dates are his true ones (1693-1776).
+- Fixed: the Drowned Antechamber's exit now sits in the bottom wall, and the shore door lands the traveller on the bottom walkway clear of it.
