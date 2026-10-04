@@ -275,3 +275,6 @@ title screen, the cast). Never change what an existing key does.
 - Cinder motes (content/volcano.js): embers that drift through the Emberdeep and sting the traveller; face one and press Space or J to fan it out into grey ash.
 - The Ember Furnace (volcano:0_-1): the chamber at the heart of the volcano, a great forge still burning at the north wall, its floor swept clean and left empty for the next figure from history.
 - A low, smoky air for the Emberdeep (content/music.js), among the Minstrel's airs.
+- Charles Goodyear (1800-1860), the eighth figure from history: at the great forge in the Ember Furnace, the chamber at the heart of The Emberdeep, with his pot of pitch on the coals.
+- Goodyear's pot (content/goodyear.js): once he is found, stir the right jar into the black pitch, then work the bellows at the pot three times; the pitch cures into rubber and you gain a heart and a pair of rubber-soled shoes.
+- The forge bellows and ash sprites (content/goodyear.js): grey puffs that crawl over the floor of the Ember Furnace and dim the hall; press K, or pull the bellows itself, to blow every one of them apart.
