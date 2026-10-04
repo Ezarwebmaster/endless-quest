@@ -261,3 +261,5 @@ title screen, the cast). Never change what an existing key does.
 - The Chamber of Echoes (crystal:0_-1): the inner heart of the caverns, its floor swept clean and crystals singing in the hall above, left empty for the next figure from history.
 - Fixed: the western road from Willow Meadow now lands on open sand at Saltmarsh Shore instead of on a rock, and John Harrison's dates are his true ones (1693-1776).
 - Fixed: the Drowned Antechamber's exit now sits in the bottom wall, and the shore door lands the traveller on the bottom walkway clear of it.
+- Rene Just Hauy (1743-1822), the sixth figure from history, the father of modern crystallography: in the Chamber of Echoes, at the foot of the Crystal Caverns, with a piece of Iceland spar in his hand.
+- Hauy's cleavage table (content/cleavage.js): a slab of dark wood with an iron anvil and a swinging mirror in the Chamber of Echoes. Once Hauy is found, strike the spar while the mirror lies level with its natural face; three clean cleavings free the integrant molecule and earn an extra heart.
