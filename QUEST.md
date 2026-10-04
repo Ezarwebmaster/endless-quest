@@ -267,3 +267,6 @@ title screen, the cast). Never change what an existing key does.
 - The Cloudspire (spire:0_0 and spire:0_-1): a tower above the clouds of pale cloudstone. Turn its three brass weather vanes into the wind, watching the drifting streaks, and the Sky Gate swings open.
 - The Orrery Chamber (spire:0_-1): the quiet top room of the spire, its brass rings turning above the clouds, its floor left empty and waiting for the next figure from history.
 - Cloud gusts (content/spire.js): little puffs of cloud that drift through the Cloudspire and shove the traveller along; they cannot sting, only push.
+- Luke Howard (1772-1864), the seventh figure from history, the man who named the clouds: in the Orrery Chamber at the top of the Cloudspire, with his weather chart in his hands.
+- Howard's cloud chart (content/howard.js): three clouds drift under the brass rings of the Orrery Chamber; face one and press Space or J to give it the name Howard gave it (cirrus, cumulus, stratus). Name all three and you gain a heart, and his compass.
+- The brass compass (content/compass.js): Howard's gift, drawn in the corner of the screen once you carry it; press K to take it in hand, and its needle settles toward the nearest figure from history you have not met, by the road that leads to that figure's dungeon.
