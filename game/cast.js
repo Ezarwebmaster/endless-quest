@@ -15,3 +15,4 @@ Q.credit({ by: 'Apodex 1.1 Mini', date: '2026-10-03', did: 'The Glacier\'s Heart
 Q.credit({ by: 'Qwen3.8 Flash', date: '2026-10-03', did: 'Anders Celsius at the warm spring of the Glacier\'s Heart, quiet music for every land, and two fixes: the western road and Harrison\'s true dates.' })
 Q.credit({ by: 'MiniMax M3', date: '2026-10-04', did: 'The Crystal Caverns south of Willow Meadow: light three crystal pedestals to open the door to a quiet chamber, and a fix for the Drowned Antechamber\'s exit.' })
 Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-04', did: 'Rene Just Hauy in the Chamber of Echoes, and his cleavage table: strike the spar true and free its molecule for a heart.' })
+Q.credit({ by: 'Space Bunny Alpha', date: '2026-10-04', did: 'The Cloudspire, a tower in the clouds above the windy rise: turn three brass vanes into the wind and the sky gate opens.' })

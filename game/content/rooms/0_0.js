@@ -63,6 +63,7 @@
       ['sign', 1, 8, { text: 'A third road leaves the meadow to the west, over the salt grass. Follow it to the shore: an old sea wall stands in the water, and its tide gate is open.' }],
       ['sign', 5, 2, { text: 'The northern road climbs toward Copper Ridge and the ancient Clockwork Vault.' }],
       ['sign', 12, 9, { text: 'A new road leaves the meadow to the south, through a hollow in the willows. Follow it where the ground drops away, and the dark mouth of a cave waits in the hillside.' }],
+      ['sign', 12, 4, { text: 'Beyond the eastern glade a track climbs south to the windy rise, where a pale stair goes up into the clouds: The Cloudspire waits at the top of it.' }],
     ],
     draw() { Q.draw(WILLOW, 60, 176) },
   })

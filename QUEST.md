@@ -263,3 +263,7 @@ title screen, the cast). Never change what an existing key does.
 - Fixed: the Drowned Antechamber's exit now sits in the bottom wall, and the shore door lands the traveller on the bottom walkway clear of it.
 - Rene Just Hauy (1743-1822), the sixth figure from history, the father of modern crystallography: in the Chamber of Echoes, at the foot of the Crystal Caverns, with a piece of Iceland spar in his hand.
 - Hauy's cleavage table (content/cleavage.js): a slab of dark wood with an iron anvil and a swinging mirror in the Chamber of Echoes. Once Hauy is found, strike the spar while the mirror lies level with its natural face; three clean cleavings free the integrant molecule and earn an extra heart.
+- The Windward Rise (1_1): south of Starglass Glade a grassy rise, where a pale stair climbs off the hilltop into the clouds: the way into The Cloudspire.
+- The Cloudspire (spire:0_0 and spire:0_-1): a tower above the clouds of pale cloudstone. Turn its three brass weather vanes into the wind, watching the drifting streaks, and the Sky Gate swings open.
+- The Orrery Chamber (spire:0_-1): the quiet top room of the spire, its brass rings turning above the clouds, its floor left empty and waiting for the next figure from history.
+- Cloud gusts (content/spire.js): little puffs of cloud that drift through the Cloudspire and shove the traveller along; they cannot sting, only push.
